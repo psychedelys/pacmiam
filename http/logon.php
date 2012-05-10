@@ -22,7 +22,7 @@ if ("valide" == $p) {
       $db_motdepasse=md5($_SESSION['challenge'] . $passwd);
     } else {
       db_close();
-      header("Location: " . https://" . $host . $root . "logon.php");
+      header("Location: " . "https://" . $host . $root . "logon.php");
       exit;
    }
    unset($_SESSION['challenge']);
@@ -38,12 +38,12 @@ if ("valide" == $p) {
       header("Location: " .$_SESSION['redir']);
       exit;
    } else {
-      header("Location: " . https://" . $host . $root . "logon.php");
+      header("Location: " . "https://" . $host . $root . "logon.php");
       exit;
     }
   } else {
     // No user or password !
-    header("Location: " . https://" . $host . $root . "logon.php");
+    header("Location: " . "https://" . $host . $root . "logon.php");
     exit;
   }
 } else {
@@ -57,7 +57,7 @@ if ("valide" == $p) {
     session_destroy();
     $_SESSION = array();
 
-    header("Location: " . https://" . $host . $root . "logon.php");
+    header("Location: " . "https://" . $host . $root . "logon.php");
   }
 
 srand();
