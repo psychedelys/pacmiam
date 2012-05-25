@@ -1,4 +1,6 @@
 <?php
+if (!isset($included)) die(); 
+
 // HTTP
 $host = "yourfabulouswebsite.exemple.org";
 $root = "/";
