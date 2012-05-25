@@ -1,3 +1,37 @@
 Page Login
 user
-passwod
+password
+
+Page crtmiam - Create Miam
+resto (add resto en ajax)
+date time
+deadline
+group
+
+page crtresto - Create Resto
+apellable full ou Ajax
+Nom
+Nr  
+Rue
+Ville
+CP
+Pays
+Tel
+WebSite
+
+Page crtuser - Create User
+User
+Password
+email
+
+Page crtgrp - Create Groupe
+grpname
+invite (select users/email)
+
+Page dpsmiam - Display Miam
+Affiche miam detail (voir crtmiam)
+si owner ( edit deadline / edit status )
+affiche group/gens invité, pour les gens dit vient/vientpas/a pas repondu
+
+
+
