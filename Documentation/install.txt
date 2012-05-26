@@ -1,0 +1,4 @@
+Mettre en place /include/params.inc.php et le confgurer
+Creer une DB
+Lancer la page /install.php pour creer les tables DB
+
