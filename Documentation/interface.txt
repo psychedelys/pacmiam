@@ -1,3 +1,5 @@
+Pour la database, MDB2 est requis (aptget)
+
 Page Login
 user
 password

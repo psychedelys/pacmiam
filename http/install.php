@@ -31,6 +31,13 @@ if (PEAR::isError($mdb2)) {
     die($mdb2->getMessage());
 }
 
+# Decommenter pour reinitialiser les donnees
+#print 'Delete all SQL Table <br>';
+#$res =& $mdb2->query("drop tables pm_grp, pm_grp_usr, pm_miam_grp, pm_miam_usr_resp, pm_miams, pm_miamusr, pm_miamusrresp, pm_resto, pm_usr");
+#if (PEAR::isError($res))  { die($res->getMessage()); }
+
+
+
 print 'Create SQL Table users<br>';
 $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_usr` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
