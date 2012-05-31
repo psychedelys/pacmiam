@@ -1,0 +1,4 @@
+Avoir un serveur web avec PHP, et PearDB, Disposer d'une DB
+Mettre en place /include/params.inc.php depuis le template et le configurer
+Creer une DB (DB de son choix)
+Lancer la page /install.php pour creer les tables DB
