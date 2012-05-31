@@ -3,7 +3,8 @@
 <form action="#" method="post" id="form_crtresto">
     <fieldset class="crtresto">
 <p>
-Nom:
+<?php sfprint('Test safe print = & < > \' " '); ?><br>
+Nom
 <input type="text" name="nom" id="nom" size="32" class="saisie" /><br />
 Nr
 <input type="text" name="nr" id="nr" size="10" class="saisie" />
@@ -23,6 +24,8 @@ Site ouaib
 <input type="hidden" name="challenge" id="challenge" value="<?php print $challenge; ?>" />
 <input type="hidden" name="p" value="valide">
 <input type="button" value="Submit" name="submit" onclick="login();" />
+
+
 </p>
     </fieldset>
 </form>

@@ -10,6 +10,7 @@ for ($i = 0; $i < 76; $i++) {   // Longueur qui sent le sha
 }
 
 
+include_once 'include/lib_sanitize.inc.php' ;
 
 include 'include/header.inc.php' ;
 
