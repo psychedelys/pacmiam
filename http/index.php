@@ -2,6 +2,14 @@
 // Interdit les appel directes au pages inc
 $included=true;
 
+
+include_once 'include/lib_sanitize.inc.php' ;
+
+// Start des sessions
+session_start();
+
+
+
 // Gestion du Chal pour les Xsrf
 srand();
 $challenge = "";
@@ -10,13 +18,11 @@ for ($i = 0; $i < 76; $i++) {   // Longueur qui sent le sha
 }
 
 
-include_once 'include/lib_sanitize.inc.php' ;
-
 include 'include/header.inc.php' ;
 
 // Page par defaut main
 $page="main";
-// Si page "pg" donne dans l'url on la recupere
+// Si page "pg" donne dans l'url on la recupere (PG pour page sans voyelles)
 if (!empty($_GET["pg"])) $page=preg_replace('/[^a-z]+/', '', mb_substr($_GET["pg"],0,10)); 
 
 switch ($page) {

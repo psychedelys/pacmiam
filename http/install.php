@@ -1,7 +1,7 @@
 <html><head></head><body>
 <h1>Creation DB</h1>
 <?php
-// Interdit les appel directes au pages inc
+// Interdit les appels directes au pages inc
 $included=true;
 
 include_once 'include/params.inc.php';
