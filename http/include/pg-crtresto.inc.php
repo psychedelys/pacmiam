@@ -84,8 +84,10 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
 
 	// Verification du tel 
         if (valid_it($tel,tel,1,32)) {
-        $tel = strtolower( str_replace(' ','',$tel));
-        $this->tel= mysql_real_escape_string($tel);
+        $tel =  str_replace(' ','',$tel);
+        $tel =  str_replace('.','',$tel);
+	$tel =  str_replace('+','',$tel);
+	$this->tel='+'.mysql_real_escape_string($tel);
         } else {
         $this->E_tel = true;
         }
@@ -100,25 +102,22 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
 
 	// Le WWW est pas obligatoire, si tous le reste est bon on le foure dans la DBe
 	if (!($this->E_name || $this->E_nr || $this->E_rue ||$this->E_ville ||$this->E_cp ||$this->E_pays ||$this->E_tel )) { // Si pas d'erreurs alors 
-       	print "DBINSERT<br>";
+       		print "Resto ADDED<br>";
 
+		// connection DB
+		global $mdb2;
 
+		// Insert into DB
+		$res =& $mdb2->query(" insert into pm_resto ( name,nr,rue,ville,cp,pays,tel,url) VALUES 
+		('$this->name','$this->nr','$this->rue','$this->cp','$this->ville','$this->pays','$this->tel','$this->www')
+		;");
 
-	// connection DB
-	global $mdb2;
-
-	$res =& $mdb2->query(" insert into pm_resto ( name,nr,rue,ville,cp,pays,tel,url) VALUES 
-	('$this->name','$this->nr','$this->rue','$this->cp','$this->ville','$this->pays','$this->tel','$this->www')
-	;");
-
-
-if (PEAR::isError($res)) {
-	echo "ERRRRROR";   
- die($res->getMessage());
-}
-
-
-        return true; // Ca c'est bien passé
+		// On error ..	
+		if (PEAR::isError($res)) {
+			echo "ERRRRROR";   
+ 			die($res->getMessage());
+		}
+        	return true; // Ca c'est bien passé
 	}
 	
 	// sinon flag "ERREUR a on" et on part false

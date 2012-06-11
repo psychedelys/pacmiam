@@ -11,12 +11,10 @@ function sfprint($string)  {
 
 function sf($string)  {
         mb_substr($string,0,256);   // 256 Char (pas byte max... dur le sql dump)
-        $string = htmlspecialchars($string, ENT_QUOTES | ENT_HTML401) ;   // html encode & " > <  classique..
+	$string = htmlspecialchars(stripslashes($string), ENT_QUOTES |  ENT_HTML401, 'UTF-8') ;   // html encode & " ' > <  classique..
         $string = str_replace('=','&#61;',$string); // html encode =  javascript pÃ©nible
-      	return $string;
+	return ($string);
 }
-
-
 
 // Function valid_it 
 // Validate a string type and lenght
@@ -24,20 +22,21 @@ function sf($string)  {
 function valid_it($field_string, $field_type, $min_length, $max_length) {
 # pas de data a checker
    if(!$field_string){ return false; }
-
      #  initialise a c'est pas bon
     $field_ok=false;
      #  type dispo
     $data_types=array(
-        "tel"=>"/^[0-9+. ]+$/",
+        "tel"=>"/^\+?[0-9. ]+$/",
         "zipcode"=>"/^[0-9\-a-zA-Z]+$/",
         "num"=>"/^[0-9]+$/",
         "url"=>"/^http(s)?:\/\/[a-z0-9.]+/i",
         "alpha"=>"/^[a-zA-Z]+$/",
-        "alpha_spc"=>"/^[a-zA-Z ]+$/",
-        "alphanum"=>"/^[a-zA-Z0-9]+$/",
-        "alphanum_spc"=>"/^[a-zA-Z0-9 ]+$/",
-        "print_spc" =>"/^[\w,'\- ]+$/u",
+        "alpha_spc"=>"/^[a-z ]+$/i",
+        "alphanum"=>"/^[a-z0-9]+$/i",
+        "alphanum_spc"=>"/^[a-z0-9 ]+$/i",
+// le charset FR reste un mystÃre, vive l'uf
+// REF : http://codeigniter.com/forums/viewthread/144309/#708153
+        "print_spc" =>"/^[\p{L}\p{No}\p{P} ]+$/iu",
     );
 
         $strsize=strlen($field_string);

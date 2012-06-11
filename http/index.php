@@ -2,6 +2,9 @@
 // Interdit les appel directes au pages inc
 $included=true;
 
+// Set full Unicode work
+mb_language('uni');
+mb_internal_encoding('UTF-8');
 
 include_once 'include/lib_sanitize.inc.php' ;
 
@@ -41,7 +44,11 @@ if (PEAR::isError($mdb2)) {
     die($mdb2->getMessage());
 }
 
-// Debut ed la page
+// Db in utf8 aussi
+$mdb2 -> setCharset('utf8');
+
+
+// Debu  de la page
 include 'include/header.inc.php' ;
 
 

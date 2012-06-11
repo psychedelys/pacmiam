@@ -31,10 +31,12 @@ if (PEAR::isError($mdb2)) {
     die($mdb2->getMessage());
 }
 
-# Decommenter pour reinitialiser les donnees
-#print 'Delete all SQL Table <br>';
-#$res =& $mdb2->query("drop tables pm_grp, pm_grp_usr, pm_miam_grp, pm_miam_usr_resp, pm_miams, pm_miamusr, pm_miamusrresp, pm_resto, pm_usr");
-#if (PEAR::isError($res))  { die($res->getMessage()); }
+// Decommenter pour reinitialiser les donnees
+//print 'Delete all SQL Table <br>';
+$res =& $mdb2->query("drop tables pm_grp, pm_grp_usr, pm_miam_grp, pm_miam_usr_resp, pm_miams, pm_miamusr, pm_miamusrresp, pm_resto, pm_usr");
+
+// Ne s'arrete pas si le drop a foire
+//if (PEAR::isError($res))  { die($res->getMessage()); }
 
 
 
@@ -45,7 +47,7 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_usr` (
   `password` varchar(45) NOT NULL,
   `email` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table User'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table User'");
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
@@ -55,7 +57,7 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_grp` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table Groupes'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Groupes'");
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
@@ -65,7 +67,7 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_grp_usr` (
   `id_groups` int(11) NOT NULL AUTO_INCREMENT,
  `id_users` int(11) NOT NULL,
   PRIMARY KEY (`id_groups`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table Jonction Group - User'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Jonction Group - User'");
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
@@ -79,7 +81,7 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_miams` (
   `deadline` timestamp NOT NULL,
   `closed` boolean NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table miams '");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table miams '");
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
@@ -96,7 +98,7 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_resto` (
   `tel` varchar(32) NOT NULL,
   `url` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table Resto'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Resto'");
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
@@ -106,7 +108,7 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_miam_grp` (
   `id_miam` int(11) NOT NULL AUTO_INCREMENT,
   `id_grp` int(11) NOT NULL,
   PRIMARY KEY (`id_miam`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table Jonction Group / Miam'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Jonction Group / Miam'");
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
@@ -117,7 +119,7 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_miam_usr_resp` (
   `id_user` int(11) NOT NULL, 
   `status` varchar(2) NOT NULL,
   PRIMARY KEY (`id_miam`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table Jonction Miam User Response'");
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Jonction Miam User Response'");
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
