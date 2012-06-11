@@ -18,7 +18,32 @@ for ($i = 0; $i < 76; $i++) {   // Longueur qui sent le sha
 }
 
 
+// Connection a la database
+include_once 'include/params.inc.php';
+require_once 'MDB2.php';
+$dsn = array(
+    'phptype'  => $db_driver,
+    'username' => $db_user,
+    'password' => $db_pwd,
+    'hostspec' => $db_server,
+    'database' => $db_name,
+);
+
+$options = array(
+    'debug'       => 2,
+    'portability' => MDB2_PORTABILITY_ALL,
+);
+
+// Creation Connection
+$mdb2 =& MDB2::connect($dsn, $options);
+if (PEAR::isError($mdb2)) {
+    print ('error: ');
+    die($mdb2->getMessage());
+}
+
+// Debut ed la page
 include 'include/header.inc.php' ;
+
 
 // Page par defaut main
 $page="main";

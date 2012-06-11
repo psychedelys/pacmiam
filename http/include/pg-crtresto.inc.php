@@ -42,42 +42,42 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
 {
 	// Verification du name du resto
 	if (valid_it($name,print_spc,1,32)) { 
-	$this->name = strtolower($name);
+	$this->name = strtolower(mysql_real_escape_string($name));
 	} else {
 	$this->E_name = true;
 	} 
 
 	// Verification du nr de rue (pour l instant tampis pour BIS TER etc))	
 	if (valid_it($nr,num,1,10)) {
-        $this->nr = $nr;
+        $this->nr = mysql_real_escape_string($nr);
         } else {
         $this->E_nr = true;
         }
 
         // Verification de rue 
         if (valid_it($rue,print_spc,1,32)) {
-        $this->rue = strtolower($rue);
+        $this->rue = strtolower(mysql_real_escape_string($rue));
         } else {
         $this->E_rue = true;
         }
 
         // Verification de la ville
         if (valid_it($ville,print_spc,1,32)) {
-        $this->ville =strtolower( $ville);
+        $this->ville =strtolower(mysql_real_escape_string( $ville));
         } else {
         $this->E_ville = true;
         }
 
         // Verification du code postal
         if (valid_it($cp,zipcode,1,32)) {
-        $this->cp = strtolower($cp);
+        $this->cp = strtolower(mysql_real_escape_string($cp));
         } else {
         $this->E_cp = true;
         }
 
 	// Verification du pays
         if (valid_it($pays,alpha,4,32)) {
-        $this->pays = strtolower( $pays);
+        $this->pays = strtolower(mysql_real_escape_string( $pays));
         } else {
         $this->E_pays = true;
         }
@@ -85,14 +85,14 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
 	// Verification du tel 
         if (valid_it($tel,tel,1,32)) {
         $tel = strtolower( str_replace(' ','',$tel));
-        $this->tel= $tel;
+        $this->tel= mysql_real_escape_string($tel);
         } else {
         $this->E_tel = true;
         }
 	
 	// Verification www
         if (valid_it($www,url,12,32)) {  
-        $this->www = $www; //	 pas de strtolower sur une url
+        $this->www = mysql_real_escape_string($www); //	 pas de strtolower sur une url
         } else {
         $this->E_www = true;
         }
@@ -104,29 +104,8 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
 
 
 
-// connection DB
-include_once 'include/params.inc.php';
-require_once 'MDB2.php';
-
-$dsn = array(
-    'phptype'  => $db_driver,
-    'username' => $db_user,
-    'password' => $db_pwd,
-    'hostspec' => $db_server,
-    'database' => $db_name,
-);
-
-$options = array(
-    'debug'       => 2,
-    'portability' => MDB2_PORTABILITY_ALL,
-);
-
-$mdb2 =& MDB2::connect($dsn, $options);
-if (PEAR::isError($mdb2)) {
-    print ('error: ');
-    die($mdb2->getMessage());
-}
-
+	// connection DB
+	global $mdb2;
 
 	$res =& $mdb2->query(" insert into pm_resto ( name,nr,rue,ville,cp,pays,tel,url) VALUES 
 	('$this->name','$this->nr','$this->rue','$this->cp','$this->ville','$this->pays','$this->tel','$this->www')
