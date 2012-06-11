@@ -32,7 +32,7 @@ if (PEAR::isError($mdb2)) {
 }
 
 // Decommenter pour reinitialiser les donnees
-//print 'Delete all SQL Table <br>';
+print 'Delete all SQL Table <br>';
 $res =& $mdb2->query("drop tables pm_grp, pm_grp_usr, pm_miam_grp, pm_miam_usr_resp, pm_miams, pm_miamusr, pm_miamusrresp, pm_resto, pm_usr");
 
 // Ne s'arrete pas si le drop a foire
@@ -123,6 +123,31 @@ $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_miam_usr_resp` (
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
+
+
+print 'Insert some resto<br>';
+$res =& $mdb2->query(" insert into pm_resto ( name,nr,rue,ville,cp,pays,tel,url) VALUES
+                ('mousel cantine','46','montee de clausen','luxembourg','l-1343','luxembourg','+470198','www.mouselscantine.lu'); ");
+
+if (PEAR::isError($res)) {
+    die($res->getMessage());
+}
+
+$res =& $mdb2->query(" insert into pm_resto ( name,nr,rue,ville,cp,pays,tel,url) VALUES
+                ('bacano','59','rue de clausen','luxembourg','l-1342','luxembourg','+43184',''); ");
+
+if (PEAR::isError($res)) {
+    die($res->getMessage());
+}
+
+
+$res =& $mdb2->query(" insert into pm_resto ( name,nr,rue,ville,cp,pays,tel,url) VALUES
+                ('mellerefer stuff','1','rue de l\'azlette','steinzel','l-7305','luxembourg','+263321604','www.mellerefer-stuff.lu'); ");
+
+if (PEAR::isError($res)) {
+    die($res->getMessage());
+}
+
 
 
 // Disconnect

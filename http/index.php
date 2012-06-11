@@ -46,7 +46,7 @@ if (PEAR::isError($mdb2)) {
 
 // Db in utf8 aussi
 $mdb2 -> setCharset('utf8');
-
+$mdb2->setFetchMode(MDB2_FETCHMODE_ASSOC); // retourne les nom des champs mappes 
 
 // Debu  de la page
 include 'include/header.inc.php' ;
@@ -69,6 +69,9 @@ switch ($page) {
         break;
     case "crtresto":  // Ajouter un resto
 	include 'include/pg-crtresto.inc.php';
+	break;
+    case "dspresto"; // Affiche les resto
+         include 'include/pg-dspresto.inc.php';
 	break;
      case "crtuser":  // Creer un User
         include 'include/pg-crtuser.inc.php';

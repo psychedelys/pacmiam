@@ -16,6 +16,7 @@
 // Creation de l'objet resto
 class Resto
 {
+  public $id;  // id du Resto
   public $name;  // Nom du Resto
   public $nr;
   public $rue;
@@ -23,7 +24,7 @@ class Resto
   public $ville;
   public $pays;
   public $tel;
-  public $www;
+  public $url;
   public $E_name;  // Flags Erreur (si true en erreur)
   public $E_nr;
   public $E_rue;
@@ -31,7 +32,7 @@ class Resto
   public $E_ville;
   public $E_pays;
   public $E_tel;
-  public $E_www;
+  public $E_url;
   public $E_INPUT;  // Flag General erreur input
 
 //+-------+-------------+------+-----+---------+----------------+
@@ -48,7 +49,44 @@ class Resto
 //| url   | varchar(32) | NO   |     | NULL    |                |
 //+-------+-------------+------+-----+---------+----------------+
 
-function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
+// Load un resto depuis la db via l'id
+function loadresto ($id)
+{
+	// connection DB
+        global $mdb2;
+
+       // Fetch resto from DB
+       $res =& $mdb2->query("select * from pm_resto where id=$id");
+
+       // On error ..
+       if (PEAR::isError($res)) {
+	        echo "ERRRRROR";
+      		die($res->getMessage());
+       }
+
+        if ($res->numRows() > 0) {    // ID FOund
+              $row = $res->fetchRow();
+		$this->id=$id;
+		$this->name=$row['name'];
+		$this->nr=$row['nr'];
+		$this->rue=$row['rue'];
+		$this->ville=$row['ville'];
+		$this->cp=$row['cp'];
+		$this->pays=$row['pays'];
+		$this->tel=$row['tel'];
+		$this->url=$row['url'];
+		return(true);
+                        } else { 
+
+	// ID NOt FOUND
+	return(false);
+		}
+
+
+}
+
+// Ajoute un Resto dans la DB
+function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $url)
 {
 	// Verification du name du resto
 	if (valid_it($name,print_spc,1,32)) { 
@@ -102,11 +140,11 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
         $this->E_tel = true;
         }
 	
-	// Verification www
-        if (valid_it($www,url,12,32)) {  
-        $this->www = mysql_real_escape_string($www); //	 pas de strtolower sur une url
+	// Verification url
+        if (valid_it($url,url,12,32)) {  
+        $this->url = mysql_real_escape_string($url); //	 pas de strtolower sur une url
         } else {
-        $this->E_www = true;
+        $this->E_url = true;
         }
 
 
@@ -119,7 +157,7 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $www)
 
 		// Insert into DB
 		$res =& $mdb2->query(" insert into pm_resto ( name,nr,rue,ville,cp,pays,tel,url) VALUES 
-		('$this->name','$this->nr','$this->rue','$this->cp','$this->ville','$this->pays','$this->tel','$this->www')
+		('$this->name','$this->nr','$this->rue','$this->cp','$this->ville','$this->pays','$this->tel','$this->url')
 		;");
 
 		// On error ..	

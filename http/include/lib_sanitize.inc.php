@@ -40,8 +40,8 @@ function valid_it($field_string, $field_type, $min_length, $max_length) {
     );
 
         $strsize=strlen($field_string);
-        if ($strsize <= $min_length)  { return false; }
-        if ($strsize >= $max_length)  { return false; }
+        if ($strsize < $min_length)  { return false; }
+        if ($strsize > $max_length)  { return false; }
 
         # Check la data
         $field_ok = preg_match($data_types[$field_type], $field_string);
