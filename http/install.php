@@ -62,11 +62,15 @@ if (PEAR::isError($res)) {
     die($res->getMessage());
 }
 
+
+// Status 0 Membre, 1 Requested, 2 remballed, 3 Invited
 print 'Create SQL Table Jonction Group_user<br>';
 $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_grp_usr` (
-  `id_groups` int(11) NOT NULL AUTO_INCREMENT,
+  `id_groups` int(11) NOT NULL ,
  `id_users` int(11) NOT NULL,
-  PRIMARY KEY (`id_groups`)
+ `admin` boolean NOT NULL,
+ `status` int(1) NOT NULL,
+ PRIMARY KEY (`id_groups`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Jonction Group - User'");
 if (PEAR::isError($res)) {
     die($res->getMessage());
@@ -148,6 +152,20 @@ if (PEAR::isError($res)) {
     die($res->getMessage());
 }
 
+echo "Create Some users<br>";
+$res =& $mdb2->query(" insert into pm_usr ( username,password,email) VALUES
+                ('johndoe','SALT!HASH','thanspam@trollprod.org'); ");
+
+if (PEAR::isError($res)) {
+    die($res->getMessage());
+}
+
+$res =& $mdb2->query(" insert into pm_usr ( username,password,email) VALUES
+                ('thanatos','SALT!HASH','thanjunk@trollprod.org'); ");
+
+if (PEAR::isError($res)) {
+    die($res->getMessage());
+}
 
 
 // Disconnect
