@@ -1,4 +1,5 @@
-<?php 
+<?php if (!isset($included)) die(); 
+
 session_set_cookie_params(30 * 60, "/");
 session_start(); 
 
@@ -22,7 +23,7 @@ if ("valide" == $p) {
       $db_motdepasse=md5($_SESSION['challenge'] . $passwd);
     } else {
       db_close();
-      header("Location: " . "https://" . $host . $root . "logon.php");
+      header("Location: " . "https://" . $host . $root . "index.php");
       exit;
    }
    unset($_SESSION['challenge']);
@@ -35,15 +36,18 @@ if ("valide" == $p) {
    }
 
    if ( $authenticated ) {
+      $_SESSION['authenticated'] = 1;
       header("Location: " .$_SESSION['redir']);
       exit;
    } else {
-      header("Location: " . "https://" . $host . $root . "logon.php");
+      $_SESSION['authenticated'] = 0;
+      header("Location: " . "https://" . $host . $root . "index.php");
       exit;
     }
   } else {
     // No user or password !
-    header("Location: " . "https://" . $host . $root . "logon.php");
+    $_SESSION['authenticated'] = 0;
+    header("Location: " . "https://" . $host . $root . "index.php");
     exit;
   }
 } else {
@@ -56,8 +60,9 @@ if ("valide" == $p) {
     session_unset();
     session_destroy();
     $_SESSION = array();
+    $_SESSION['authenticated'] = 0;
 
-    header("Location: " . "https://" . $host . $root . "logon.php");
+    header("Location: " . "https://" . $host . $root . "index.php");
   }
 
 srand();
@@ -143,3 +148,4 @@ print "<input type=\"hidden\" name=\"challenge\" id=\"challenge\" value=\"$chall
 
 
 ?>
+
