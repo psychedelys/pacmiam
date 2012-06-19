@@ -64,8 +64,10 @@ switch ($page) {
     case "dspmiam":   // Affichage d'un Miam
 	include 'include/pg-dspmiam.inc.php';
     case "login":
+        include 'include/pg-login.inc.php';
         break;
     case "loggoff":
+        include 'include/pg-logoff.inc.php';
         break;
     case "crtresto":  // Ajouter un resto
 	include 'include/pg-crtresto.inc.php';
