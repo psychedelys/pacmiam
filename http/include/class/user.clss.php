@@ -18,17 +18,16 @@
 Un user... bin c'est un user quoi.
 
 
-
 status = 1 integer
-		0 User Créé mais pas validé (pas encore de pong du mail)
-		1 User Suspendu
+		0 User Créé mais pas encore validé (pas encore de pong du mail)
+		1 User Suspendu ... 2 jaunes
 		9 User Ok
 
 le password est dans gr44l format password SALT!SHA1  
-	Salt = un CrC 32 en hexa > 8 Char
+	Salt = un CrC 32 d'un random en hexa > 8 Char
 	Sha en hexa 41 Char
 
-Le token sert pour la validation du compte
+Le token sert pour la validation du compte via le mail et pour le reset de pwd.
 
 
 mysql> describe pm_usr;
@@ -53,7 +52,7 @@ class	User
   public $gr44l; // Password Hachémenu 
   public $email; // email du user
   public $status; // status du user
-  public $token;
+  public $token; // Token de validation
 
 
   public $E_username;  // Flags Erreur (si true en erreur)
@@ -62,10 +61,10 @@ class	User
   public $E_INPUT;  // Flag General erreur input
  
 
-// Ajoute un groupe dans la DB
+// Ajoute un user dans la DB
 function adduser ($username,$email,$password,$salt)
 {
-	// Verification du name du resto
+	// Verification du name du user 
 	if (valid_it($username,alphanum,4,32)) { // Le nom du user est cool
 		// Ajouter ici verif sur colision de username  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -87,16 +86,15 @@ function adduser ($username,$email,$password,$salt)
 		$this->E_email = true;
 	}
 
-    if (valid_it($password,print_spc,8,128)) { // Si l'id est pas numerique ca pue mais d'ou ca vient ?
+    if (valid_it($password,print_spc,8,128)) { // Validation du pwd
 		 // on s'en fout du format du sel, il est hashé de toutes facons on le vérifie pas
-		$this->gr44l = mysql_real_escape_string(dechex(crc32($salt))."!".sha1(dechex(crc32($salt)).$password)); // le mysql escape sert a rien vraiment.
+		$this->gr44l = dechex(crc32($salt))."!".sha1(dechex(crc32($salt)).$password); // le mysql escape sert a rien vraiment.
      } else {
          $this->E_password = true;
      }
 
      
-	if (!($this->E_username || $this->E_email || $this->E_password)) { // Si pas d'erreurs alors on fourre dans la db
-       	print "User ADDED<br>";
+	if (!($this->E_username || $this->E_email || $this->E_password)) { // Si pas d'erreurs alors on fourre le user dans la db
 
 		// Géneration du token pour le mail
 		$this->token = sha1(microtime().$salt);
@@ -116,7 +114,7 @@ function adduser ($username,$email,$password,$salt)
 
 		$this->id =$mdb2->lastInsertID(); // Recupere le user id
 
-       	return true; // Ca c'est bien passÃ©
+       	return true; // Ca c'est bien passé
 	}
 	
 	// sinon flag "ERREUR a on" et on part false
