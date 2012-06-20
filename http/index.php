@@ -6,14 +6,14 @@ $included=true;
 mb_language('uni');
 mb_internal_encoding('UTF-8');
 
+// Libraire de validation
 include_once 'include/lib_sanitize.inc.php' ;
 
 // Start des sessions
 session_start();
 
 
-
-// Gestion du Chal pour les Xsrf
+// Gestion du Chal pour les Xsrf et les validation de posts
 srand();
 $challenge = "";
 for ($i = 0; $i < 76; $i++) {   // Longueur qui sent le sha
@@ -58,11 +58,12 @@ $page="main";
 if (!empty($_GET["pg"])) $page=preg_replace('/[^a-z]+/', '', mb_substr($_GET["pg"],0,10)); 
 
 switch ($page) {
-    case "crtmiam":  // Creation d'un Miam
-	include 'include/pg-crtmiam.inc.php';
+	case "crtmiam":  // Creation d'un Miam
+		include 'include/pg-crtmiam.inc.php';
         break;
     case "dspmiam":   // Affichage d'un Miam
-	include 'include/pg-dspmiam.inc.php';
+		include 'include/pg-dspmiam.inc.php';
+		break;
     case "login":
         include 'include/pg-login.inc.php';
         break;
@@ -70,20 +71,20 @@ switch ($page) {
         include 'include/pg-logoff.inc.php';
         break;
     case "crtresto":  // Ajouter un resto
-	include 'include/pg-crtresto.inc.php';
-	break;
+		include 'include/pg-crtresto.inc.php';
+		break;
     case "dspresto"; // Affiche les resto
-         include 'include/pg-dspresto.inc.php';
-	break;
-     case "crtuser":  // Creer un User
+        include 'include/pg-dspresto.inc.php';
+		break;
+    case "crtuser":  // Creer un User
         include 'include/pg-crtuser.inc.php';
         break;
-     case "crtgrp":  // Creer un Group
+    case "crtgrp":  // Creer un Group
         include 'include/pg-crtgrp.inc.php';
         break;
     default:     // parametre bidonne ou absent, Page d'acceuil
-	include 'include/pg-main.inc.php' ;
-	break;
+		include 'include/pg-main.inc.php' ;
+		break;
 }
 
 include 'include/footer.inc.php' ;

@@ -1,4 +1,6 @@
 Avoir un serveur web avec PHP, et PearDB, Disposer d'une DB
+Installer PhpGd (lib graphique) sur debian : sudo apt-get install php5-gd
 Mettre en place /include/params.inc.php depuis le template et le configurer
-Creer une DB (DB de son choix)
+Creer une DB (DB de son choixe)
 Lancer la page /install.php pour creer les tables DB
+

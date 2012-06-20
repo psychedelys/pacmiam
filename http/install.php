@@ -178,4 +178,23 @@ if (PEAR::isError($res)) {
 // Disconnect
 $mdb2->disconnect();
 
+
+
+// cleanup third part and prod..
+print "<br>cleanup install...<br>";
+
+$badfiles = array (
+"./install.php",
+);
+
+foreach ($badfiles as $filetocheck) {
+	if (file_exists($filetocheck)) { 
+		print "Please remove <b>$filetocheck</b> in production env<br>"; 
+	}
+}
+
+
+
+
+
 ?></body></html>
