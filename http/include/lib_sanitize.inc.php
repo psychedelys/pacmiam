@@ -37,6 +37,8 @@ function valid_it($field_string, $field_type, $min_length, $max_length) {
 // le charset FR reste un mystÃre, vive l'uf
 // REF : http://codeigniter.com/forums/viewthread/144309/#708153
         "print_spc" =>"/^[\p{L}\p{No}\p{P}0-9 ]+$/iu",
+		// elle est pas de moi... !!
+		"email" => "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/"  
     );
 
         $strsize=strlen($field_string);

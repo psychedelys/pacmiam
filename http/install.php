@@ -40,12 +40,19 @@ $res =& $mdb2->query("drop tables pm_grp, pm_grp_usr, pm_miam_grp, pm_miam_usr_r
 
 
 
+// le user... password SALT!SHA1  
+//Salt = CrC 32 en hexa > 8 Char
+//Sha en hexa 41 Char
+
+
 print 'Create SQL Table users<br>';
 $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_usr` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `gr44l` varchar(50) NOT NULL,
   `email` varchar(128) NOT NULL,
+  `status` int(2) NOT NULL,
+  `token` varchar(41) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table User'");
 if (PEAR::isError($res)) {
@@ -152,16 +159,16 @@ if (PEAR::isError($res)) {
     die($res->getMessage());
 }
 
-echo "Create Some users<br>";
-$res =& $mdb2->query(" insert into pm_usr ( username,password,email) VALUES
-                ('johndoe','SALT!HASH','thanspam@trollprod.org'); ");
+echo "Create Some users... johndoe and thanatos with password as pass<br>";
+$res =& $mdb2->query(" insert into pm_usr ( username,gr44l,email,status) VALUES
+                ('johndoe','93c3e1f!8f03ef97e75a700d96f062dfc9edd728a826e48a','thanspam@trollprod.org',9); ");
 
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
 
-$res =& $mdb2->query(" insert into pm_usr ( username,password,email) VALUES
-                ('thanatos','SALT!HASH','thanjunk@trollprod.org'); ");
+$res =& $mdb2->query(" insert into pm_usr ( username,gr44l,email,status) VALUES
+                ('thanatos','8d4582a9!4ea7df8ab36a257610fd58691737be6d181b8e62','thanjunk@trollprod.org',9); ");
 
 if (PEAR::isError($res)) {
     die($res->getMessage());
