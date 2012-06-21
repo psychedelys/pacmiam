@@ -32,7 +32,7 @@ class SimpleCaptcha {
     public $width  = 250;
 
     /** Height of the image */
-    public $height = 70;
+    public $height = 100;
 
     /** Sessionname to store the original text */
     public $session_var = 'captcha';
@@ -77,7 +77,7 @@ class SimpleCaptcha {
 
 
     /** letter rotation clockwise */
-    public $maxRotation = 8;
+    public $maxRotation = 5;
 
     /**
      * Internal image size factor (for better image quality)
@@ -201,21 +201,25 @@ class SimpleCaptcha {
 // J'en veux plus ici, pour etre plus "CaptCha".. :) mais ceux la sont droles
     protected function GetCaptchaText() {
         $words=array(
-        "tartares",
-        "camparis",
-        "bieres",
-        "jarrets",
-        "picons",
-        "flamms",
-        "sushis",
-        "nems",
-		"trestresbons",
-		"pizzas",
-		"amaretos",
-		"irish coffees"
+        "tartare",
+        "campari",
+        "biere",
+        "jarret",
+        "picon",
+        "flamm",
+        "sushi",
+        "nem",
+		"trestresbon",
+		"pizza",
+		"amareto",
+		"irish",
+		"cafe",
+		"expresso"
         );
 
-        $text = rand(2, 15)." ".$words[(rand(0, count($words)-1))];
+		$count = rand(1,16);
+        $text = $count." ".$words[(rand(0, count($words)-1))];
+		if ($count > 1) $text=$text."s";
         return $text;
 
     }
