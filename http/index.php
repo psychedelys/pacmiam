@@ -8,6 +8,7 @@ mb_internal_encoding('UTF-8');
 
 // Libraire de validation
 include_once 'include/lib_sanitize.inc.php' ;
+include_once 'include/functions.inc.php' ;
 
 // Start des sessions
 session_start();
@@ -45,7 +46,7 @@ $options = array(
 // Creation Connection
 $mdb2 =& MDB2::connect($dsn, $options);
 if (PEAR::isError($mdb2)) {
-    print ('error: ');
+ error("SQL ERROR");
     die($mdb2->getMessage());
 }
 

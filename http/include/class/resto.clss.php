@@ -60,7 +60,7 @@ function loadresto ($id)
 
        // On error ..
        if (PEAR::isError($res)) {
-	        echo "ERRRRROR";
+    		error("SQL ERROR");
       		die($res->getMessage());
        }
 
@@ -162,7 +162,7 @@ function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $url)
 
 		// On error ..	
 		if (PEAR::isError($res)) {
-			echo "ERRRRROR";   
+    		error("SQL ERROR");
  			die($res->getMessage());
 		}
         	return true; // Ca c'est bien passé

@@ -108,8 +108,8 @@ function adduser ($username,$email,$password,$salt)
 
 		// On error ..	
 		if (PEAR::isError($res)) {
-			echo "ERRRRROR";   
- 			die($res->getMessage());
+			error("SQL ERROR");
+			die($res->getMessage());
 		}
 
 		$this->id =$mdb2->lastInsertID(); // Recupere le user id
