@@ -17,7 +17,7 @@ session_start();
 // Si le uid est present et mis je suis un user logge
 $_SESSION['uid'] = 2;  // id user thanatos
 $_SESSION['username'] = "thanatos" ;  // user thanatos
-
+//unset($_SESSION['uid']);  // Loggin/Loggof Manouel
 
 // Gestion du Chal pour les Xsrf et les validation de posts
 srand();
@@ -63,39 +63,50 @@ $page="main";
 // Si page "pg" donne dans l'url on la recupere (PG pour page sans voyelles)
 if (!empty($_GET["pg"])) $page=preg_replace('/[^a-z]+/', '', mb_substr($_GET["pg"],0,10)); 
 
+// Pages publiques
 switch ($page) {
-	case "crtmiam":  // Creation d'un Miam
-		include 'include/pg-crtmiam.inc.php';
-        break;
-    case "dspmiam":   // Affichage d'un Miam
-		include 'include/pg-dspmiam.inc.php';
+	case "login":
+		include 'include/pg-login.inc.php';
 		break;
-    case "login":
-        include 'include/pg-login.inc.php';
-        break;
-    case "logoff":
-        include 'include/pg-logoff.inc.php';
-        break;
-    case "crtresto":  // Ajouter un resto
-		include 'include/pg-crtresto.inc.php';
-		break;
-    case "dspresto"; // Affiche les resto
+	case "dspresto"; // Affiche les resto
         include 'include/pg-dspresto.inc.php';
 		break;
-    case "crtuser":  // Creer un User
-        include 'include/pg-crtuser.inc.php';
-        break;
-    case "edtuser":  // Edit User
-        include 'include/pg-edtuser.inc.php';
-        break;
-case "crtgrp":  // Creer un Group
-        include 'include/pg-crtgrp.inc.php';
-        break;
-    default:     // parametre bidonne ou absent, Page d'acceuil
-		include 'include/pg-main.inc.php' ;
+	case "crtuser":  // Creer un User
+		include 'include/pg-crtuser.inc.php';
+		break;
+	default: 
+		// Pages si authentification ok
+		if (isset($_SESSION['uid'])) {
+    		switch ($page) {
+        		case "crtmiam":  // Creation d'un Miam
+            		include 'include/pg-crtmiam.inc.php';
+            		break;
+        		case "dspmiam":   // Affichage d'un Miam
+            		include 'include/pg-dspmiam.inc.php';
+            		break;
+        		case "logoff":
+            		include 'include/pg-logoff.inc.php';
+            		break;
+        		case "crtresto":  // Ajouter un resto
+            		include 'include/pg-crtresto.inc.php';
+            		break;
+        		case "edtuser":  // Edit User
+            		include 'include/pg-edtuser.inc.php';
+            		break;
+        		case "crtgrp":  // Creer un Group
+            		include 'include/pg-crtgrp.inc.php';
+            		break;
+				default:
+					$nopagefound=true;
+					break;
+			}
+		} else  {
+			include 'include/pg-main.inc.php' ;
+		}
+		// Special pour le petit con qui fait nimp et est logged
+		if ($nopagefound) include 'include/pg-main.inc.php' ; 
 		break;
 }
-
 include 'include/footer.inc.php' ;
 
 // sauvegarde du challenge
