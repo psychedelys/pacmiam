@@ -47,31 +47,36 @@ class	Group
 // Function qui loade un array avec les ID des groupes pour un user donne
 function getgroups($usr_id) 
 {
-    // connection DB
-    global $mdb2;
+	// connection DB
+	global $mdb2;
+	// Fetch group name from DB
+	$res =& $mdb2->query("select id_groups from pm_grp_usr where id_users='".$usr_id."';");
 
-    // Fetch group name from DB
-    $res =& $mdb2->query("select id_groups from pm_grp_usr where id_users=$usr_id");
+	// On error ..
+	if (PEAR::isError($res)) {
+		error("SQL ERROR 1 ".$res);
+		die($res->getMessage());
+	}
 
-    // On error ..
-       if (PEAR::isError($res)) {
-                echo "ERRRRROR";
-                die($res->getMessage());
-       }
+	$list_group=array();
+    while ($row = $res->fetchRow()) {
+		// for each group fetch name	
+		$res2 =& $mdb2->query("select id,name from pm_grp where id='".$row['id_groups']."';");
 
-    if ($res->numRows() > 0) {    // ID FOund
-              $row = $res->fetchRow();
-                $this->tel=$row['tel'];
-                $this->url=$row['url'];
-                return(true);
-                        } else {
-
-        // ID NOt FOUND
-        return(false);
-                }
-
-
- }
+		if (PEAR::isError($res2)) {
+			error("SQL ERROR 2 ".$res2);
+			die($res2->getMessage());
+		}
+		
+		
+		// a mettre dans un array	
+		while ($row2 = $res2->fetchRow()) {
+		$list_group[]=$row2['id'];
+		$list_group[]=$row2['name'];
+		}
+    }
+    return($list_group);
+}
 
 
 // Ajoute un groupe dans la DB
@@ -91,7 +96,6 @@ function addgroup ($name,$id_usr)
         }
 
 	if (!($this->E_name  )) { // Si pas d'erreurs alors 
-       		print "Group ADDED<br>";
 
 		// connection DB
 		global $mdb2;
@@ -103,8 +107,8 @@ function addgroup ($name,$id_usr)
 
 		// On error ..	
 		if (PEAR::isError($res)) {
-			echo "ERRRRROR";   
- 			die($res->getMessage());
+        	error("SQL ERROR");
+ 		die($res->getMessage());
 		}
 
 		$this->id =$mdb2->lastInsertID(); // Recupere le group id
@@ -116,8 +120,8 @@ function addgroup ($name,$id_usr)
 
                 // On error ..
                 if (PEAR::isError($res)) {
-                        echo "ERRRRROR";
-                        die($res->getMessage());
+        			error("SQL ERROR");
+                	die($res->getMessage());
                 }
 
 

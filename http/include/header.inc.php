@@ -11,5 +11,17 @@
   |____|    (____  /\______  /__|_|  /__(____  /\____|__  /
                  \/        \/      \/        \/    NeXt \/Generation... 
 </PRE>
-<a href='./'>Main</a>&nbsp;<a href='./?pg=login'>login</a>&nbsp;<a href='./?pg=crtuser'>Sign In</a>
+<a href='./'>Main</a>&nbsp;
+<?php
+
+if (isset($_SESSION['uid'])) {
+	// le user est logge
+	print "<a href='./?pg=logoff'>logoff</a>&nbsp;";
+	print "<a href='./?pg=edtuser'>".sf(ucfirst($_SESSION['username']))."</a>";
+	} else {
+	// pas encore logge
+	print "<a href='./?pg=login'>login</a>&nbsp;";
+	print "<a href='./?pg=crtuser'>Sign In</a>";
+	}
+?>
 <br>

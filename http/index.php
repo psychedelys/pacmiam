@@ -8,9 +8,15 @@ mb_internal_encoding('UTF-8');
 
 // Libraire de validation
 include_once 'include/lib_sanitize.inc.php' ;
+include_once 'include/functions.inc.php' ;
 
 // Start des sessions
 session_start();
+
+// En attendant le vrai signon
+// Si le uid est present et mis je suis un user logge
+$_SESSION['uid'] = 2;  // id user thanatos
+$_SESSION['username'] = "thanatos" ;  // user thanatos
 
 
 // Gestion du Chal pour les Xsrf et les validation de posts
@@ -40,7 +46,7 @@ $options = array(
 // Creation Connection
 $mdb2 =& MDB2::connect($dsn, $options);
 if (PEAR::isError($mdb2)) {
-    print ('error: ');
+ error("SQL ERROR");
     die($mdb2->getMessage());
 }
 
@@ -67,7 +73,7 @@ switch ($page) {
     case "login":
         include 'include/pg-login.inc.php';
         break;
-    case "loggoff":
+    case "logoff":
         include 'include/pg-logoff.inc.php';
         break;
     case "crtresto":  // Ajouter un resto
@@ -79,7 +85,10 @@ switch ($page) {
     case "crtuser":  // Creer un User
         include 'include/pg-crtuser.inc.php';
         break;
-    case "crtgrp":  // Creer un Group
+    case "edtuser":  // Edit User
+        include 'include/pg-edtuser.inc.php';
+        break;
+case "crtgrp":  // Creer un Group
         include 'include/pg-crtgrp.inc.php';
         break;
     default:     // parametre bidonne ou absent, Page d'acceuil
