@@ -1,3 +1,147 @@
+/* Let's reset that bitch */
+/* YUI 3.5.1 (build 22)  * Copyright 2012 Yahoo! Inc. All rights reserved.  * Licensed under the BSD License.  * http://yuilibrary.com/license/ */
+html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}#yui3-css-stamp.cssreset{display:none}
+
+a {
+	color:  rgb(51, 51, 51);
+}
+
+a:visited {
+}
+
+img {
+	border: none;
+}
+
+html, body {
+	    height: 100%;
+}
+
+
+body {
+   	background:url("/img/grid_noise.png") repeat scroll 0% 0% transparent;
+	font-family: "Lucida Grande","Trebuchet MS",sans-serif;
+    font-size: 12px;
+    color: rgb(51, 51, 51);
+}
+
+/* We got big screen right ? */
+#push {
+    min-height: 100%;
+    height: auto !important;
+    position: relative;
+    margin-bottom: -35px;
+}
+
+
+.clear {
+	display:block;
+	clear:both;
+}
+
+
+.wrapper {
+    margin: 0px auto;
+    width: 1080px;
+}
+
+
+#header {
+	background: none repeat scroll 0% 0% rgba(040, 040, 040, 0.8);
+	color: rgb(255, 255, 255);
+	text-align: center;
+	padding: 6px 0px 4px;
+	height: 70px;
+	-webkit-box-shadow: 0 8px 6px -3px #1E1E1E;
+	-moz-box-shadow: 0 8px 6px -3px #1E1E1E;
+	box-shadow: 0 8px 6px -3px #1E1E1E;
+	-moz-border-radius:0 0 4px 4px;
+	-webkit-border-radius:0 0 4px 4px;
+	-o-border-radius:0 0 4px 4px;
+	border-radius:0 0 4px 4px;
+}
+
+#logo {
+	float: left;
+}
+
+#title {
+	float: center;
+	margin: auto;
+	text-align:center;
+	width: 160px;
+}
+
+#title a {
+	text-decoration: none;
+}
+
+#title h1 {
+	color: rgb(255, 255, 255);
+	font-size: 30px;
+}
+
+#title h3 {
+	color: #C2C7D1;
+	font-size: 14px;
+	text-align: right;
+	margin-top: 5px;
+	-webkit-transform: rotate(-20deg);
+	-moz-transform: rotate(-20deg);
+}
+
+
+#headerlinks {
+	float:right;
+}
+
+#header ul#links li {
+    display: table-cell;
+    padding: 0px 0px 0px 3px;
+    color: rgb(255, 255, 255);
+}
+
+#header ul#links li a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    padding: 1px 6px;
+}
+
+#header ul#links li a:hover {
+  background:#9ac95e;
+  color:#445e21;
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  -o-border-radius:4px;
+  border-radius:4px;
+}
+
+
+#footer {
+	clear: both;
+	background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.5);
+	text-align: center;
+	padding: 10px 0px;
+	position: relative;
+	height: 15px;
+}
+
+#container .wrapper {
+    border: 1px dashed rgb(212, 212, 212);
+    border-radius: 8px 8px 8px 8px;
+    width: 1048px;
+    background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.75);
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#container h1 {
+	font-weight:bold;
+	font-size:24px;
+	border-bottom:1px dashed #d4d4d4;
+	margin-bottom:20px;
+}
 
 input.error {
 	border-color: red;
