@@ -1,5 +1,5 @@
 Code part By :
 
 Jose Rodriguez <jose.rodriguez@exec.cl> http://code.google.com/p/cool-php-captcha GPLv3
-
+John Resig Jquery MIT & GPL 
 

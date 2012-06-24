@@ -128,7 +128,7 @@ print 'Create SQL Table Miam-User-Resp<br>';
 $res =& $mdb2->query("CREATE TABLE IF NOT EXISTS `pm_miam_usr_resp` (
   `id_miam` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) NOT NULL, 
-  `status` varchar(2) NOT NULL,
+  `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_miam`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Table Jonction Miam User Response'");
 if (PEAR::isError($res)) {

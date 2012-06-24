@@ -11,6 +11,8 @@ include_once 'include/lib_sanitize.inc.php' ;
 include_once 'include/functions.inc.php' ;
 include_once 'include/lib_dspdry.inc.php' ;
 
+
+
 // Chargement des classes
 include_once "include/class/group.clss.php"; // liste des grps sur la home
 

@@ -4,6 +4,10 @@
 
 <!-- Main CSS -->
 <link rel="stylesheet" type="text/css" href="./style/style.css">
+<link type="text/css" href="./js/jquery/css/smoothness/jquery-ui-1.8.21.custom.css" rel="stylesheet" />
+<script type="text/javascript" src="./js/jquery/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="./js/jquery/js/jquery-ui-1.8.21.custom.min.js"></script>
+
 </head><body>
     <div id="push">
         <div id="header">
