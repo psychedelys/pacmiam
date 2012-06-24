@@ -9,6 +9,10 @@ mb_internal_encoding('UTF-8');
 // Libraire de validation
 include_once 'include/lib_sanitize.inc.php' ;
 include_once 'include/functions.inc.php' ;
+include_once 'include/lib_dspdry.inc.php' ;
+
+// Chargement des classes
+include_once "include/class/group.clss.php"; // liste des grps sur la home
 
 // Start des sessions
 session_start();
@@ -78,24 +82,27 @@ switch ($page) {
 		// Pages si authentification ok
 		if (isset($_SESSION['uid'])) {
     		switch ($page) {
-        		case "crtmiam":  // Creation d'un Miam
+				case "logoff":  // fermeture de session
+					include 'include/pg-logoff.inc.php';
+					break;
+				case "crtmiam":  // Creation d'un Miam
             		include 'include/pg-crtmiam.inc.php';
             		break;
-        		case "dspmiam":   // Affichage d'un Miam
+        		case "dspmiam":  // Affichage d'un Miam
             		include 'include/pg-dspmiam.inc.php';
             		break;
-        		case "logoff":
-            		include 'include/pg-logoff.inc.php';
-            		break;
-        		case "crtresto":  // Ajouter un resto
+        		case "crtresto": // Ajouter un resto
             		include 'include/pg-crtresto.inc.php';
             		break;
-        		case "edtuser":  // Edit User
+        		case "edtuser": // Edit User
             		include 'include/pg-edtuser.inc.php';
             		break;
         		case "crtgrp":  // Creer un Group
             		include 'include/pg-crtgrp.inc.php';
             		break;
+				case "edtgrp": // Edite un group
+					include 'include/pg-edtgrp.inc.php';
+					break;
 				default:
 					$nopagefound=true;
 					break;
@@ -109,7 +116,7 @@ switch ($page) {
 }
 include 'include/footer.inc.php' ;
 
-// sauvegarde du challenge
+// sauvegarde du challenge pour la prochaine page
 $_SESSION['challenge'] = $challenge;
 
 ?>

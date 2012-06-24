@@ -2,7 +2,7 @@
 <h1>Create Group</h1>
 <?php
 include_once "include/class/group.clss.php";
-
+include_once "include/lib_dspdry.inc.php";
 
 // Creation de l'objet Resto
 $mygrp = new Group;
@@ -16,20 +16,6 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"],0,76)==$_SES
 if ($result) {
 	print "group created";
 	} else {
-	print "<h2>My current groups</h2>";
-	$result2 = $mygrp -> getgroups($_SESSION['uid'])  ; // Get group list 
-
-$i = 0; 
-$max = count( $result2 ); 
-
-while( $i < $max ) 
-{ 
-  echo sf($result2[ $i+1 ]) . '<br />'; 
-    $i++; 
-    $i++; 
-	} 
-
-// Ce n'est pas un post, affichage du formulaire.
 ?>
 <h2>Add a group</h2>
 <form action="./?pg=crtgrp" method="post" id="form_crtgrp">
@@ -43,9 +29,10 @@ Nom du groupe
 </p>
 </fieldset>
 </form>
-
 <?php
+   // affiche mes groupes
+       print "<h2>Mes groupes</2>";
+	       printmygroups();
  // fin de la page
 } 
-
 ?>

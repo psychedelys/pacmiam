@@ -25,7 +25,7 @@ body {
     color: rgb(51, 51, 51);
 }
 
-/* We got big screen right ? */
+/* We got big screen right ? ... hey non mec !!!*/
 #push {
     min-height: 100%;
     height: auto !important;
@@ -80,6 +80,16 @@ body {
 	color: rgb(255, 255, 255);
 	font-size: 30px;
 }
+
+
+/* modif pour voir ou j en suis jupa*/
+h2 {
+	    font-size: 22px;
+		}
+
+h3 {
+	        font-size: 16px;
+       }
 
 #title h3 {
 	color: #C2C7D1;

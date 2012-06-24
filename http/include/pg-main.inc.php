@@ -13,8 +13,9 @@
 	<a href='./?pg=crtgrp'>Create Group</a> 
 	<br><br>
 	<h1>Coming Miam's</h1>
-	<h1>My Group</h1>
+	<h1>Mes Groupes</h1>
 <?php
+printmygroups();
 } ?>
 
 </div>

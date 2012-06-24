@@ -16,6 +16,7 @@
 // Un groupe est un sac avec des users dedans
 // Quand on le cree on est automatiquement membre;
 
+// pm_grp
 //+-------+-------------+------+-----+---------+----------------+
 //| Field | Type        | Null | Key | Default | Extra          |
 //+-------+-------------+------+-----+---------+----------------+
@@ -23,6 +24,7 @@
 //| name  | varchar(32) | NO   |     | NULL    |                |
 //+-------+-------------+------+-----+---------+----------------+
 
+// pm_grp_usr
 //+-----------+------------+------+-----+---------+-------+
 //| Field     | Type       | Null | Key | Default | Extra |
 //+-----------+------------+------+-----+---------+-------+
@@ -44,9 +46,30 @@ class	Group
  
   public $groups_array;  // Array mygroups,ID
 
-// Function qui loade un array avec les ID des groupes pour un user donne
-function getgroups($usr_id) 
-{
+// Function qui dit si on est owner d'un groupe
+// valable pour tout group hors objec courant
+function isgroupmaster($uid,$gid) {
+    // connection DB
+    global $mdb2;
+    // Fetch group name from DB
+    $res =& $mdb2->query("select admin from pm_grp_usr where id_users='".$uid."' and id_groups='".$gid."';");
+
+    // On error ..
+    if (PEAR::isError($res)) {
+		error("SQL ERROR isgroupmaster".$res);
+		die($res->getMessage());
+	}
+
+	if ($res = 1) {
+		return True;
+	} else { 
+		return False;
+	}
+}
+
+
+// Function qui loade un array avec les ID des groupes ou il est membre pour un user donne
+function getgroups($usr_id) {
 	// connection DB
 	global $mdb2;
 	// Fetch group name from DB
@@ -67,7 +90,6 @@ function getgroups($usr_id)
 			error("SQL ERROR 2 ".$res2);
 			die($res2->getMessage());
 		}
-		
 		
 		// a mettre dans un array	
 		while ($row2 = $res2->fetchRow()) {
