@@ -57,6 +57,15 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
         $alice->calculateKey();
         $alice_key = $alice->getkey();
         print "alice key: '" . $alice_key . "'<br>\n";
+        //print "password is :'" . mcrypt_decrypt ( AES_256, $alice_key, $pass ) . "'";
+//$retval = rtrim($retval, "\0");
+
+include_once 'include/classes/aes.php';
+
+//  require 'aes.class.php';     // AES PHP implementation
+//  require 'aesctr.class.php';  // AES Counter Mode implementation 
+print "password is :'" . AesCtr::decrypt($pass, $alice_key, 256) . "'";
+
     } else {
         print "not all field defined<br>";
         //header("Location: " . "https://" . $host . $root . "index.php");
@@ -126,6 +135,10 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
 <script language="JavaScript" type="text/javascript" src="js/rng.js"></script>
 <script language="JavaScript" type="text/javascript" src="js/ec.js"></script>
 <script language="JavaScript" type="text/javascript" src="js/sec.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/aes/aes.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/aes/aes-ctr.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/aes/base64.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/aes/utf8.js"></script>
 <script type="text/javascript">
 <!--
 function set_ec_params(name) {
@@ -230,7 +243,8 @@ function do_login() {
   formsubmit.login.value = document.ecdhtest.identifiant.value;
     
   // Change it to crypto with (document.ecdhtest.bob_key_x.value,document.ecdhtest.bob_key_y.value)
-  formsubmit.truc.value = document.ecdhtest.motdepasse.value;
+  //formsubmit.truc.value = CryptoJS.AES.encrypt(document.ecdhtest.motdepasse.value, document.ecdhtest.bob_key_x.value +','+ document.ecdhtest.bob_key_y.value );
+formsubmit.truc.value = Aes.Ctr.encrypt(document.ecdhtest.motdepasse.value, document.ecdhtest.bob_key_x.value +','+ document.ecdhtest.bob_key_y.value, 256);
   formsubmit.challenge.value = document.ecdhtest.challenge.value;
   formsubmit.bob_pub_x.value = document.ecdhtest.bob_pub_x.value;
   formsubmit.bob_pub_y.value = document.ecdhtest.bob_pub_y.value;
