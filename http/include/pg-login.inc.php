@@ -43,8 +43,6 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
         print "alice_priv: '" . $_SESSION['alice_priv'] . "'<br>\n";
         print "user: '$user'<br>\n";
         print "ori_pass: '$pass'<br>\n";
-        //print "bob_pub_x: '$bob_pub_x'<br>\n";
-        //print "bob_pub_y: '$bob_pub_y'<br>\n";
         $g = NISTcurve::generator_192();
         $alice = new EcDH($g);
         $alice->setSecret($_SESSION['alice_priv']);
@@ -57,23 +55,21 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
         $alice->calculateKey();
         $alice_key = $alice->getkey();
         print "alice key: '" . $alice_key . "'<br>\n";
-        //print "password is :'" . mcrypt_decrypt ( AES_256, $alice_key, $pass ) . "'";
-//$retval = rtrim($retval, "\0");
-
-include_once 'include/classes/aes.php';
-
-//  require 'aes.class.php';     // AES PHP implementation
-//  require 'aesctr.class.php';  // AES Counter Mode implementation 
-print "password is :'" . AesCtr::decrypt($pass, $alice_key, 256) . "'";
-
+        include_once 'include/classes/aes.php';
+        $pass = AesCtr::decrypt($pass, $alice_key, 256);
+        print "password is :'" . $pass . "'";
+        unset($_SESSION['alice_priv']);
+        unset($_SESSION['alice_curve_prime']);
+        unset($_SESSION['alice_curve_a']);
+        unset($_SESSION['alice_curve_b']);
     } else {
         print "not all field defined<br>";
-        //header("Location: " . "https://" . $host . $root . "index.php");
+        header("Location: " . "http://" . $host . $root . "index.php");
         exit;
     }
     exit;
     if (isset($pass) and isset($user)) {
-        $res = & $mdb2->query("SELECT username,email,pwd FROM users WHERE username='" . $user . "';");
+        $res = & $mdb2->query("SELECT uid,username,email,pwd FROM users WHERE username='" . $user . "';");
         if ($res->numRows() == 1) {
             $row = $res->fetchRow();
             $passwd = sf($row['gr441']);
