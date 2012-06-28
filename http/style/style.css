@@ -42,7 +42,8 @@ body {
 
 .wrapper {
     margin: 0px auto;
-    width: 1080px;
+    width: 90%;
+/*	1080px;*/
 }
 
 
@@ -139,7 +140,7 @@ h3 {
 #container .wrapper {
     border: 1px dashed rgb(212, 212, 212);
     border-radius: 8px 8px 8px 8px;
-    width: 1048px;
+    width: 95%;
     background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.75);
     padding: 20px;
     margin-top: 20px;
