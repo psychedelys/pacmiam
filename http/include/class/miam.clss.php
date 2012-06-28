@@ -58,68 +58,86 @@ mysql> describe pm_miam_grp;
 // Creation de l'objet groupe
 class	Miam
 {
-  public $mid;  // id du Resto
-  public $name;  // Nom du Resto
-	
+  public $rid;  // id du Resto
+  public $gid;  // id du Groupe
+  public $mid;	// id du miam
+  public $miam_date; // date du miam
+  public $dead_date; // date de la deadline
+  public $uid; // id du miam leader
+
+  public $E_miam_date_d; // Flags Erreur date du miam
   public $E_name;  // Flags Erreur (si true en erreur)
+  public $E_gid;  // Flags Erreur groupe (si true en erreur)
   public $E_INPUT;  // Flag General erreur input
  
 // Ajoute un miam dans la DB
-function addmiam ($rid,$id_usr)
+
+function addmiam($gid,$rid,$date,$h,$m,$dead)
 {
-	// Verification du name du resto
-	if (valid_it($name,print_spc,1,32)) { // Le nom du groupe est cool
- 
-	$this->name = strtolower(mysql_real_escape_string($name));
-	} else {
-	$this->E_name = true;
+
+	// ***  Verification du group...
+    $this->E_gid = true;
+    if (valid_it($git,num,1,11)) { // Le nom du groupe est cool
+		// est ce que le user fait partit du groupe ? si il existe pas le groupe ou il est pas membre error.
+		// TODO
+
+	    $this->gid = $name; // pas d'escape c'est un NUM.
+    	$this->E_gid = false;
 	}
 
-	if (valid_it($id_usr,num,1,11)) { // Si l'id est pas numerique ca pue mais d'o ca vient ?
-	} else {
-        $this->E_INPUT = true;
-        }
+	// *** Verification du  resto
+	$this->E_rid = true;
+	if (valid_it($rid,num,1,11)) { // l'id du resto est un num
+		// est ce que cet id existe vraiment ?
+		// TODO
 
-	if (!($this->E_name  )) { // Si pas d'erreurs alors 
-
-		// connection DB
-		global $mdb2;
-
-		// Insert into DB
-		$res =& $mdb2->query(" insert into pm_grp ( name) VALUES 
-		('$this->name')
-		;");
-
-		// On error ..	
-		if (PEAR::isError($res)) {
-        	error("SQL ERROR");
- 		die($res->getMessage());
-		}
-
-		$this->id =$mdb2->lastInsertID(); // Recupere le group id
-
-                // Insert into DB la jonction USER / GROUPE
-                $res =& $mdb2->query(" insert into pm_grp_usr ( id_groups, id_users, admin, status) VALUES
-                ('$this->id','$id_usr',true,'0')
-                ;");
-
-                // On error ..
-                if (PEAR::isError($res)) {
-        			error("SQL ERROR");
-                	die($res->getMessage());
-                }
+		$this->rid = $rid;
+		$this->E_name = false;
+	}
 
 
-        	return true; // Ca c'est bien passé
+	$this->E_date = true;
+	//*** Verification de la date
+	if (valid_it($date,datefr,8,10)) { // l'id du resto est un num
+		$this->E_date = false;
+	}
+
+	//*** Verification de l'heure
+	if (valid_it($h,num,1,2)) { // l'id du resto est un num
+		$this->E_heure = false;
+	}
+
+    //*** Verification des minutes
+       if (valid_it($m,num,1,2)) { // l'id du resto est un num
+		$this->E_min = false;
+	       }
+
+	// mise en forme de la date. DD/MM/YYYY HH:MM
+	// TODO
+
+
+
+
+
+	//*** Verification de la dead line.
+	if (valid_it($dead,num,2,5)) { // l'id du resto est un num
+		// Est ce que la Dead line est pas passée ??
+		// TODO
+
+		// calcule la date 
+		// TODO
+
 	}
 	
 	// sinon flag "ERREUR a on" et on part false
-	$this->E_INPUT=true;
-	return false;
+	//$this->E_INPUT=true;
+	//return false;
+
+	return true; // Tout s'est bien passé
+   
+}
 
 
- }  
 
-  }
-
+}
 ?>
