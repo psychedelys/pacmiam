@@ -85,6 +85,9 @@ function loadresto ($id)
 
 }
 
+
+
+
 // Ajoute un Resto dans la DB
 function addresto ($name,$nr, $rue, $cp, $ville, $pays, $tel, $url)
 {

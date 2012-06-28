@@ -18,31 +18,52 @@ if ($result) {
 ?>
 <h2>Add a Miam</h2>
 <form action="./?pg=crtmiam" method="post" id="form_crtmiam">
-    <fieldset class="crtmiam">
-<p>
+<fieldset class="crtmiam"><p>
 Miam pour le groupe:
 <select>
 <?php
-  // fetche la liste des groupes dont je suis membre 
+// Si le group est preselectionne et correct on l'impose
+if ((!empty($_GET["gid"])) && (valid_it($_GET["gid"],num,1,11))) { // Le nom du groupe est cool
+	print "GID";  
+} else {
+// Si le group est pas selectionne on proprose la liste
+
+// fetche la liste des groupes dont je suis membre 
     $fdy_tmp_grp = new Group;
     $result2 = $fdy_tmp_grp -> getgroups($_SESSION['uid'])  ; // Get group list 
     $i = 0;
     $max = count( $result2 );
     // pour chaques groupes
     while( $i < $max ) {
-        echo "<option>".sf($result2[$i+1])."</option>";
+        echo "<option value=".sf($result2[$i]).">".sf($result2[$i+1])."</option>";
         // affiche le bouton create miam du group   
         // affiche le bouton edit si on est admin du groupe     
         $i=$i+2;
     }
-
+}
 ?>
 </select><br>
+On mange chez :<select>
+<?php
+    
+    $res =& $mdb2->query("select id,name from pm_resto order by name;");
+	if ($res->numRows() > 0) {
+		while (($row = $res->fetchRow())) {
+       		// Assuming MDB2's default fetchmode is MDB2_FETCHMODE_ORDERED
+        	echo "<option value=".sf($row['id']).">".sf(ucfirst($row['name']))."</option>";
+		}
+	}
+?>
+</select>
 Date du miam:
 <script>
 	$(function() {
-		$( "#datepicker" ).datepicker();
-	});
+		$( "#datepicker" ).datepicker({ 
+			dayNamesMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"], 
+			minDate: new Date(<?php echo date("Y,n - 1,d"); ?>), 
+			dateFormat: "dd/mm/yy" 
+			});
+	}); 
 </script>
 <input type="text" id="datepicker"><br>
 Heure<select>
@@ -62,10 +83,11 @@ for ($i = 0; $i <= 23; $i++) {
 </select>
 Dead Line:
 <select>
-<option>30mn avant</option>
-<option>1h avant</option>
-<option>1j avant</option>
-<option>1sem avant</option>
+<option value="30">30mn avant</option>
+<option value="60">1h avant</option>
+<option value="1440">1j avant</option>
+<option value="2880">2j avant</option>
+<option value="10080">1sem avant</option>
 </select>
 <input type="hidden" name="challenge" id="challenge" value="<?php print $challenge; ?>" />
 <br><input type="submit" class="button mainaction" value="Create Miam" />
