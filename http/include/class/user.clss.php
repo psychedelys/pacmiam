@@ -88,7 +88,12 @@ function adduser ($username,$email,$password,$salt)
 
     if (valid_it($password,print_spc,8,128)) { // Validation du pwd
 		 // on s'en fout du format du sel, il est hashé de toutes facons on le vérifie pas
-		$this->gr44l = dechex(crc32($salt))."!".sha1(dechex(crc32($salt)).$password); // le mysql escape sert a rien vraiment.
+$hash=$password;
+// Best practice password.. hashing * 1024 ... ralentis le dehasheur
+for ($i = 1; $i <= 1024; $i++) {
+	$hash = sha1(dechex(crc32($salt)).$hash); 
+	}
+	$this->gr44l = dechex(crc32($salt))."!".$hash; // le mysql escape sert a rien vraiment.
      } else {
          $this->E_password = true;
      }

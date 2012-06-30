@@ -39,7 +39,7 @@ function valid_it($field_string, $field_type, $min_length, $max_length) {
         "print_spc" =>"/^[\p{L}\p{No}\p{P}0-9 ]+$/iu",
 		// elle est pas de moi... !!
 		"email" => "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/",
-		"datefr" => "/^[0-9]{1,2}\/[0-9]{1,2}\/20[0-9]{1,2}/"  // Oui prévoir le bug de l'an 2100...
+		"datefr" => "/^[0123][0-9]\/[01][0-9]\/20[1-9][0-9]$/"  // Oui prévoir le bug de l'an 2100...
     );
 
         $strsize=strlen($field_string);
