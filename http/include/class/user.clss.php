@@ -59,26 +59,29 @@ class User
     // Ajoute un user dans la DB
     function adduser($username, $email, $password, $salt)
     {
+        // connection DB
+        global $mdb2;
+
         // Verification du name du user
-        if (valid_it($username, alphanum, 4, 32)) { // Le nom du user est cool
+        if (valid_it($username, "alphanum", 4, 32)) { // Le nom du user est cool
             // Ajouter ici verif sur colision de username  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            $this->username = strtolower(mysql_real_escape_string($username));
+            $this->username = strtolower($mdb2->quote($username, 'text'));
         } else {
             $this->E_username = true;
         }
-        if (valid_it($email, email, 4, 128)) { //  on teste l'email
+        if (valid_it($email, "email", 4, 128)) { //  on teste l'email
             // Si le recorde MX du dns est ok...
             list($part1, $domain) = split('@', $email);
             if (checkdnsrr($domain, 'MX')) {
-                $this->email = strtolower(mysql_real_escape_string($email));
+                $this->email = strtolower($mdb2->quote($email, 'text'));
             } else {
                 $this->E_email = true;
             }
         } else {
             $this->E_email = true;
         }
-        if (valid_it($password, print_spc, 8, 128)) { // Validation du pwd
+        if (valid_it($password, "print_spc", 8, 128)) { // Validation du pwd
             // on s'en fout du format du sel, il est hashé de toutes facons on le vérifie pas
             $hash = $password;
             // Best practice password.. hashing * 1024 ... ralentis le dehasheur
@@ -93,11 +96,8 @@ class User
         if (!($this->E_username || $this->E_email || $this->E_password)) { // Si pas d'erreurs alors on fourre le user dans la db
             // Géneration du token pour le mail
             $this->token = sha1(microtime() . $salt);
-            // connection DB
-            global $mdb2;
             // Insert into DB
-            $res = & $mdb2->query(" insert into pm_usr ( username,email,gr44l,status,token) VALUES 
-		('$this->username','$this->email','$this->gr44l',0,'$this->token') 	;"); // Status 0 .. created but not valid.
+            $res = & $mdb2->query(" insert into pm_usr (username,email,gr44l,status,token) VALUES ($this->username,$this->email,'$this->gr44l',0,'$this->token');"); // Status 0 .. created but not valid.
             // On error ..
             if (PEAR::isError($res)) {
                 error("SQL ERROR");
