@@ -19,12 +19,6 @@ include_once "include/class/group.clss.php"; // liste des grps sur la home
 // Start des sessions
 session_start();
 
-// En attendant le vrai signon
-// Si le uid est present et mis je suis un user logge
-$_SESSION['uid'] = 2;  // id user thanatos
-$_SESSION['username'] = "thanatos" ;  // user thanatos
-//unset($_SESSION['uid']);  // Loggin/Loggof Manouel
-
 // Gestion du Chal pour les Xsrf et les validation de posts
 srand();
 $challenge = "";
@@ -69,6 +63,7 @@ $page="main";
 // Si page "pg" donne dans l'url on la recupere (PG pour page sans voyelles)
 if (!empty($_GET["pg"])) $page=preg_replace('/[^a-z]+/', '', mb_substr($_GET["pg"],0,10)); 
 
+$nopagefound=false;
 // Pages publiques
 switch ($page) {
 	case "login":
