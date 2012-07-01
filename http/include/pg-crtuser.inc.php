@@ -3,10 +3,12 @@ if (!isset($included)) die(); ?>
 <h1>CreAte User</h1>
 
 <?php
+$wrongcaptcha = false;
 // insertion class user
 include_once "include/class/user.clss.php";
 // Creation de l'objet user
 $myuser = new User;
+$result = false;
 // Si il a poste le cookie challenge est present et doit etre bon..
 if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $_SESSION['challenge'])) {
     // C'est donc un post... maintenant regardon le captcha
@@ -21,13 +23,14 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
 }
 // Si le formulaire n'a pas ete poste ou si il est bourrer d'erreur on affiche le formulaire
 if ($result) {
-    // si le post s'est bien passÃ©.
+    // si le post s'est bien passé.
     print "<br>user created<br>";
 } else {
     // Si le formulaire n'a pas ete poste ou si il est bourrer d'erreur on affiche le formulaire
     if ($myuser->E_INPUT) {
         print "<b>Veuillez remplir correctement le formulaire</b>";
-    } ?>
+    } 
+?>
 	
 <form action="#" method="post" id="form_login">
 <fieldset class="crtuser">
