@@ -25,13 +25,14 @@ function __autoload($f)
         require_once $utilFile;
     }
 }
+
 if (extension_loaded('gmp') && !defined('USE_EXT')) {
     define('USE_EXT', 'GMP');
 } else if (extension_loaded('bcmath') && !defined('USE_EXT')) {
     define('USE_EXT', 'BCMATH');
 }
 if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $_SESSION['challenge'])) {
-    $authenticated = false;
+    $password =  '';
     //data checking
     $user = pg_escape_string($_POST["login"]);
     $pass = pg_escape_string($_POST["truc"]);
@@ -54,52 +55,58 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
         // calculate alice key
         $alice->calculateKey();
         $alice_key = $alice->getkey();
-        print "alice key: '" . $alice_key . "'<br>\n";
+    //    print "alice key: '" . $alice_key . "'<br>\n";
         include_once 'include/classes/aes.php';
         $pass = AesCtr::decrypt($pass, $alice_key, 256);
-        print "password is :'" . $pass . "'";
+    //    print "password is :'" . $pass . "'";
         unset($_SESSION['alice_priv']);
         unset($_SESSION['alice_curve_prime']);
         unset($_SESSION['alice_curve_a']);
         unset($_SESSION['alice_curve_b']);
+
+	//get salt of 256 random bits in hex
+    	//$salt = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+	//$hash = hash("sha256", $salt . $pass);
+	//$password = $salt . $hash;
+        
     } else {
         print "not all field defined<br>";
         header("Location: " . "http://" . $host . $root . "index.php");
         exit;
     }
-    exit;
-    if (isset($pass) and isset($user)) {
-        $res = & $mdb2->query("SELECT uid,username,email,pwd FROM users WHERE username='" . $user . "';");
+//  check length
+    if (isset($password) and isset($user)) {
+        print "authentication";
+        $res = & $mdb2->query("SELECT id,username,email,gr44l FROM pm_usr WHERE username='" . strtolower(mysql_real_escape_string($user)) . "';");
         if ($res->numRows() == 1) {
             $row = $res->fetchRow();
-            $passwd = sf($row['gr441']);
-            // le user... password SALT!SHA1
-            //Salt = CrC 32 en hexa > 8 Char
-            //Sha en hexa 41 Char
-            $db_motdepasse = md5($_SESSION['challenge'] . $passwd);
-        } else {
-            //header("Location: " . "https://" . $host . $root . "index.php");
-            exit;
-        }
-        unset($_SESSION['challenge']);
-        if (strcmp($db_motdepasse, $motdepasse) == 0) {
-            $authenticated = true;
+            $hpasswd = sf($row['gr441']);
+            list ( $salt, $db_hash ) = explode('!', $hpasswd );
+
+            $hash = $password;
+            for ($i = 1; $i <= 1024; $i++) {
+                $hash = sha1(dechex(crc32($salt)) . $hash);
+            }
+            $hash = dechex(crc32($salt)) . "!" . $hash; // le mysql escape sert a rien vraiment.
+ 
+        if (strcmp($db_hash, $hash) == 0) {
             $_SESSION['user'] = sf($row['username']);
             $_SESSION['email'] = sf($row['email']);
-        }
-        if ($authenticated) {
-            $_SESSION['authenticated'] = 1;
+            $_SESSION['uid'] = sf($row['id']);
+            print "session is ok";
             header("Location: " . $_SESSION['redir']);
-            exit;
         } else {
-            $_SESSION['authenticated'] = 0;
-            header("Location: " . "https://" . $host . $root . "index.php");
+            header("Location: " . "http://" . $host . $root . "index.php");
+            exit;
+        }
+
+        } else {
+            header("Location: " . "http://" . $host . $root . "index.php");
             exit;
         }
     } else {
         // No user or password !
-        $_SESSION['authenticated'] = 0;
-        header("Location: " . "https://" . $host . $root . "index.php");
+        header("Location: " . "http://" . $host . $root . "index.php");
         exit;
     }
 } else {
@@ -111,7 +118,7 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
         session_unset();
         session_destroy();
         $_SESSION = array();
-        header("Location: " . "https://" . $host . $root . "index.php");
+        header("Location: " . "http://" . $host . $root . "index.php");
     }
     // print logon page
     if (!isset($_SESSION['redir'])) {
@@ -121,7 +128,7 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
             // redirect https
             $_SESSION['redir'] = $_SERVER['HTTP_REFERER'];
         } else {
-            $_SESSION['redir'] = "https://" . $host . $root . "index.php";
+            $_SESSION['redir'] = "http://" . $host . $root . "index.php";
         }
     }
 ?>
