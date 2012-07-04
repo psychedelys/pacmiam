@@ -67,7 +67,7 @@ Email:<br>
     } ?> /><br/>
 <input type="hidden" name="challenge" id="challenge" value="<?php
     print $challenge; ?>" />
-<input type="submit" class="button mainaction" value="Add Me" /
+<input type="submit" class="button mainaction" value="Add Me" />
 </p>
 </fieldset>
 </form>
