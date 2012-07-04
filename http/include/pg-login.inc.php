@@ -25,25 +25,30 @@ function __autoload($f)
         require_once $utilFile;
     }
 }
-
 if (extension_loaded('gmp') && !defined('USE_EXT')) {
     define('USE_EXT', 'GMP');
 } else if (extension_loaded('bcmath') && !defined('USE_EXT')) {
     define('USE_EXT', 'BCMATH');
 }
 if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $_SESSION['challenge'])) {
-    $password =  '';
+    unset ( $_SESSION['challenge'] );
+    $password = '';
     //data checking
-    $user = pg_escape_string($_POST["login"]);
-    $pass = pg_escape_string($_POST["truc"]);
-    $bob_pub_x = pg_escape_string($_POST["bob_pub_x"]);
-    $bob_pub_y = pg_escape_string($_POST["bob_pub_y"]);
+    $user = strtolower($mdb2->quote($_POST["login"], text));
+    $user = str_replace("'", "", $user);
+    $pass = $_POST["truc"];
+    if (!valid_it($user, "alphanum", 4, 32)) {
+        // print "bad user:$user";
+        header("Location: " . "http://" . $host . $root . "index.php");
+        exit;
+    }
+    $bob_pub_x = $mdb2->quote($_POST["bob_pub_x"], text);
+    $bob_pub_x = str_replace("'", "", $bob_pub_x);
+    $bob_pub_y = $mdb2->quote($_POST["bob_pub_y"], text);
+    $bob_pub_y = str_replace("'", "", $bob_pub_y);
     $row = '';
     if (isset($pass) and isset($user) and isset($bob_pub_x) and isset($bob_pub_y) and isset($_SESSION['alice_priv'])) {
         $alice_priv = $_SESSION['alice_priv'];
-        print "alice_priv: '" . $_SESSION['alice_priv'] . "'<br>\n";
-        print "user: '$user'<br>\n";
-        print "ori_pass: '$pass'<br>\n";
         $g = NISTcurve::generator_192();
         $alice = new EcDH($g);
         $alice->setSecret($_SESSION['alice_priv']);
@@ -55,52 +60,48 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
         // calculate alice key
         $alice->calculateKey();
         $alice_key = $alice->getkey();
-    //    print "alice key: '" . $alice_key . "'<br>\n";
         include_once 'include/classes/aes.php';
-        $pass = AesCtr::decrypt($pass, $alice_key, 256);
-    //    print "password is :'" . $pass . "'";
+        $password = AesCtr::decrypt($pass, $alice_key, 256);
         unset($_SESSION['alice_priv']);
         unset($_SESSION['alice_curve_prime']);
         unset($_SESSION['alice_curve_a']);
         unset($_SESSION['alice_curve_b']);
-
-	//get salt of 256 random bits in hex
-    	//$salt = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
-	//$hash = hash("sha256", $salt . $pass);
-	//$password = $salt . $hash;
         
     } else {
-        print "not all field defined<br>";
+        // print "not all field defined<br>";
         header("Location: " . "http://" . $host . $root . "index.php");
         exit;
     }
-//  check length
+    //  check length
     if (isset($password) and isset($user)) {
-        print "authentication";
-        $res = & $mdb2->query("SELECT id,username,email,gr44l FROM pm_usr WHERE username='" . strtolower(mysql_real_escape_string($user)) . "';");
+        print "authentication<br>";
+        $res = & $mdb2->query("SELECT id,username,email,gr44l FROM pm_usr WHERE username='" . $user . "';");
+        if (PEAR::isError($res)) {
+            die($res->getMessage());
+        }
         if ($res->numRows() == 1) {
             $row = $res->fetchRow();
-            $hpasswd = sf($row['gr441']);
-            list ( $salt, $db_hash ) = explode('!', $hpasswd );
-
+            $hpasswd = sf($row['gr44l']);
+            list($salt, $db_hash) = explode('!', $hpasswd);
+            print "Salt is '$salt' '$db_hash' '$hpasswd' <br>";
             $hash = $password;
             for ($i = 1; $i <= 1024; $i++) {
                 $hash = sha1(dechex(crc32($salt)) . $hash);
             }
-            $hash = dechex(crc32($salt)) . "!" . $hash; // le mysql escape sert a rien vraiment.
- 
-        if (strcmp($db_hash, $hash) == 0) {
-            $_SESSION['user'] = sf($row['username']);
-            $_SESSION['email'] = sf($row['email']);
-            $_SESSION['uid'] = sf($row['id']);
-            print "session is ok";
-            header("Location: " . $_SESSION['redir']);
+            if (strcmp($db_hash, $hash) == 0) {
+                $_SESSION['user'] = sf($row['username']);
+                $_SESSION['email'] = sf($row['email']);
+                $_SESSION['uid'] = sf($row['id']);
+                print "session is ok";
+                header("Location: " . $_SESSION['redir']);
+            } else {
+                // Bad hash
+                print "Bad hash:'$db_hash' '$hash'<br>";
+                //header("Location: " . "http://" . $host . $root . "index.php");
+                exit;
+            }
         } else {
-            header("Location: " . "http://" . $host . $root . "index.php");
-            exit;
-        }
-
-        } else {
+            // more than 1 row fetched
             header("Location: " . "http://" . $host . $root . "index.php");
             exit;
         }
