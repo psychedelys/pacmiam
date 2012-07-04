@@ -86,10 +86,10 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
             print "Salt is '$salt' '$db_hash' '$hpasswd' <br>";
             $hash = $password;
             for ($i = 1; $i <= 1024; $i++) {
-                $hash = sha1(dechex(crc32($salt)) . $hash);
+                $hash = sha1($salt . $hash);
             }
             if (strcmp($db_hash, $hash) == 0) {
-                $_SESSION['user'] = sf($row['username']);
+                $_SESSION['username'] = sf($row['username']);
                 $_SESSION['email'] = sf($row['email']);
                 $_SESSION['uid'] = sf($row['id']);
                 print "session is ok";
