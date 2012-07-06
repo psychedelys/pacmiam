@@ -96,8 +96,7 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
                 header("Location: " . $_SESSION['redir']);
             } else {
                 // Bad hash
-                print "Bad hash:'$db_hash' '$hash'<br>";
-                //header("Location: " . "http://" . $host . $root . "index.php");
+                header("Location: " . "http://" . $host . $root . "index.php");
                 exit;
             }
         } else {
@@ -245,10 +244,7 @@ function do_login() {
 
   var formsubmit = document.getElementById("form_submit");
   formsubmit.login.value = document.ecdhtest.identifiant.value;
-    
-  // Change it to crypto with (document.ecdhtest.bob_key_x.value,document.ecdhtest.bob_key_y.value)
-  //formsubmit.truc.value = CryptoJS.AES.encrypt(document.ecdhtest.motdepasse.value, document.ecdhtest.bob_key_x.value +','+ document.ecdhtest.bob_key_y.value );
-formsubmit.truc.value = Aes.Ctr.encrypt(document.ecdhtest.motdepasse.value, document.ecdhtest.bob_key_x.value +','+ document.ecdhtest.bob_key_y.value, 256);
+  formsubmit.truc.value = Aes.Ctr.encrypt(document.ecdhtest.motdepasse.value, document.ecdhtest.bob_key_x.value +','+ document.ecdhtest.bob_key_y.value, 256);
   formsubmit.challenge.value = document.ecdhtest.challenge.value;
   formsubmit.bob_pub_x.value = document.ecdhtest.bob_pub_x.value;
   formsubmit.bob_pub_y.value = document.ecdhtest.bob_pub_y.value;
