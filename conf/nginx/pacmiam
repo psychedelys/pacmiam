@@ -1,0 +1,133 @@
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+
+ ## Size Limits
+ #client_body_buffer_size   8k;
+ #client_header_buffer_size 1k;
+ #client_max_body_size      1m;
+ #large_client_header_buffers 4 4k/8k;
+
+ ## Global SSL options
+  ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:AES128-SHA;
+  # ssl_ciphers HIGH:!ADH:!MD5;
+ #ssl_engine aesni;
+  ssl_prefer_server_ciphers on;
+  ssl_protocols TLSv1;
+  ssl_session_timeout 5m;
+ #ssl_dhparam /ssl_keys/diffie_helman.pem;
+
+ ## Timeouts 
+ #client_body_timeout     60;
+ #client_header_timeout   60;
+ #keepalive_timeout       300 300;
+ #send_timeout            60;
+
+ ## General Options
+  charset                 utf-8;
+  #default_type            application/octet-stream;
+  ignore_invalid_headers  on;
+  #include                 /etc/nginx/mime.types
+  keepalive_requests      20;
+ #keepalive_disable       msie6;
+  max_ranges              0;
+ #open_file_cache         max=1000 inactive=1h;
+ #open_file_cache_errors  on;
+ #open_file_cache_min_uses 3;
+ #open_file_cache_valid   1m;
+  recursive_error_pages   on;
+  #sendfile                on;
+  server_tokens           off;
+ #server_name_in_redirect on;
+  source_charset          utf-8;
+ #tcp_nodelay             on;
+ #tcp_nopush              off;
+
+ # Request limits
+  limit_req_zone  $binary_remote_addr  zone=gulag:10m   rate=120r/m;
+
+ ## Log Format
+  log_format  main  '$remote_addr $host $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $ssl_cipher $request_time';
+
+
+server {
+  listen 80;
+  server_name miam.example.org;
+  keepalive_timeout 70;
+  root /home/pacmiam/http/;
+
+  if ($http_host != "miam.example.org") {
+     return 204;
+  }
+
+  add_header Cache-Control "public, must-revalidate";
+  add_header Strict-Transport-Security "max-age=315360000; includeSubdomains";
+  access_log  /var/log/nginx/access.log main buffer=32k;
+  error_log   /var/log/nginx/error.log error;
+  expires     1h;
+  limit_req   zone=gulag burst=120 nodelay;
+
+  location / {
+    index     index.php;
+  }
+
+  # Protect hidden file to read/write access
+  location ~ /\. {
+    deny all;
+  }
+
+  ## Trying to access include files directly returns a 404.
+  location ^~ /include {
+    internal;
+  } 
+
+  ## Trying to access install.php file directly returns a 404.
+  location ^~ /install.php {
+    internal;
+  } 
+
+  # PHP scripts -&gt; PHP-FPM server listening on socket
+  location ~ /cgi-bin/*\.php$ {
+    try_files $uri =404;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root/cgi-bin/$fastcgi_script_name;
+  }
+
+  # PHP scripts -&gt; PHP-FPM server listening on socket
+  location ~ \.php$ {
+    try_files $uri =404;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  }
+
+  # Stuffs
+  location = /favicon.ico {
+    access_log off;
+    log_not_found off;
+    return 204;
+  }
+
+  ## All other errors get the generic error page
+  error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 495 496 497 /404.html;
+
+  # redirect server error pages to the static page /50x.html
+  error_page 500 502 503 504 505 506 507 /50x.html;
+  #location = /50x.html {
+  #root /usr/share/nginx/www;
+  #}
+
+
+}
