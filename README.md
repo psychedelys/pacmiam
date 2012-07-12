@@ -34,3 +34,5 @@ Thanks to:
 * http://crypto.stanford.edu/sjcl/
 * https://github.com/nappa/eliptic_curve_names
 * http://www.unlimitednovelty.com/2012/03/dont-use-bcrypt.html
+* Jose Rodriguez http://code.google.com/p/cool-php-captcha GPLv3
+* John Resig Jquery MIT & GPL 
