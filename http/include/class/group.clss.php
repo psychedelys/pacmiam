@@ -101,6 +101,40 @@ function getgroups($usr_id) {
 }
 
 
+// Get la liste des groupe dont je ne fait pas partis
+function getOgroups($usr_id) {
+    // connection DB
+    global $mdb2;
+    // Fetch group name from DB
+    $res =& $mdb2->query("select id_groups from pm_grp_usr where id_users!='".$usr_id."';");
+
+    // On error ..
+    if (PEAR::isError($res)) {
+        error("SQL ERROR 1 ".$res);
+        die($res->getMessage());
+    }
+
+    $list_group=array();
+    while ($row = $res->fetchRow()) {
+        // for each group fetch name    
+        $res2 =& $mdb2->query("select id,name from pm_grp where id='".$row['id_groups']."';");
+
+        if (PEAR::isError($res2)) {
+            error("SQL ERROR 2 ".$res2);
+            die($res2->getMessage());
+        }
+
+        // a mettre dans un array   
+        while ($row2 = $res2->fetchRow()) {
+        $list_group[]=$row2['id'];
+        $list_group[]=$row2['name'];
+        }
+    }
+    return($list_group);
+}
+
+
+
 // Ajoute un groupe dans la DB
 function addgroup ($name,$id_usr)
 {

@@ -202,9 +202,9 @@ function do_login() {
      return false;
   }
 
-  document.ecdhtest.status.value = "ok1";
+  //document.ecdhtest.status.value = "ok1";
   do_bob_key();
-  document.ecdhtest.status.value = "ok2";
+ // document.ecdhtest.status.value = "ok2";
 
   var formsubmit = document.getElementById("form_submit");
   formsubmit.username.value = document.ecdhtest.username.value;
@@ -267,8 +267,9 @@ Email:<br>
     print "<input type='hidden' name='alice_pub_x' value='$pubPoint_X'><br>\n";
     print "<input type='hidden' name='alice_pub_y' value='$pubPoint_Y'><br>\n";
     print "<input type='hidden' name='challenge' id='challenge' value='$challenge'><br>\n";
+
+//<input type="text" name="status" id="status" value="" />
 ?>
-<input type="text" name="status" id="status" value="" />
 <input type="submit" class="button mainaction" value="Add Me" onclick="do_login();" />
 </p>
 </fieldset>

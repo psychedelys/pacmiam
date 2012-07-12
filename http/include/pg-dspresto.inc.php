@@ -1,6 +1,11 @@
 <?php if (!isset($included)) die();  ?>
-<h1>Display resto</h1>
+<div><h1>Display resto</h1>
+<?php
+if (isset($_SESSION['uid'])) { ?>
+	<p><a href='./?pg=crtresto'>Ajouter un resto</a></div>
 <?php 
+}
+print "<br>";
 
 include_once "include/class/resto.clss.php";
 
@@ -44,4 +49,3 @@ if ((!empty($_GET["id"]))  && (valid_it($_GET["id"],num,1,10))) {
 }
 
 ?>
-

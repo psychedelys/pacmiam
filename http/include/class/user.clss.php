@@ -64,13 +64,27 @@ class User
 
         // Verification du name du user
         if (valid_it($username, "alphanum", 4, 32)) { // Le nom du user est cool
-            // Ajouter ici verif sur colision de username  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            $this->username = strtolower($mdb2->quote($username, 'text'));
-        } else {
-            $this->E_username = true;
+			$query = ("select count(username) as doublon from pm_usr where username ='".strtolower($mdb2->quote($username, 'text'))."';");
+			$res = & $mdb2->query("select count(username) as doublon from pm_usr where username =".strtolower($mdb2->quote($username, 'text')).";");
+	        // On error ..
+     		if (PEAR::isError($res)) {
+            	error("SQL ERROR".$res.$query);
+                die($res->getMessage());
+            }
+		
+			while ($row = $res->fetchRow()) {
+	        	// for each doublon
+			  	if ($row['doublon']==0) {
+					$this->username = strtolower($mdb2->quote($username, 'text'));
+				} else {
+				    $this->E_username = true;
+				}
+			}
+	    } else {
+            	$this->E_username = true;
         }
-        if (valid_it($email, "email", 4, 128)) { //  on teste l'email
+
+		if (valid_it($email, "email", 4, 128)) { //  on teste l'email
             // Si le recorde MX du dns est ok...
             list($part1, $domain) = split('@', $email);
             if (checkdnsrr($domain, 'MX')) {

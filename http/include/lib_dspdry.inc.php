@@ -27,4 +27,21 @@ function printmygroups(){
     }
 }
 
+function printOgroups(){
+    // fetche la liste des groupes dont je suis membre 
+    $fdy_tmp_grp = new Group;
+    $result2 = $fdy_tmp_grp -> getOgroups($_SESSION['uid'])  ; // Get group list 
+    $i = 0;
+    $max = count( $result2 );
+    // pour chaques groupes
+    while( $i < $max ) {
+        // affiche le nom du group
+        echo "<h3>".sf($result2[$i+1])."</h3>";
+        // affiche le bouton create miam du group   
+        echo "<a href=\"./?pg=edtgrp&gid=".sf($result2[$i])."\">Rejoindre</a>";
+        // affiche le bouton edit si on est admin du groupe     
+        $i=$i+2;
+   } 
+}
+
 ?>
