@@ -1,6 +1,4 @@
 <?php if (!isset($included)) die();  ?>
-<div id="container">
-<div class="wrapper">
 
 <h1>MAin Page</h1>
 <a href='./?pg=dspresto'>Display resto</a>
@@ -18,5 +16,3 @@
 printmygroups();
 } ?>
 
-</div>
-</div>

@@ -27,9 +27,12 @@
                     </ul>
                 </div><br>
                 <div id="logo">
-                    <img src="" alt="logo_pacmiam">
                 </div>
                 <div id="title"><a href='./'><h1>Pacmiam</h1><h3>NeXtGen</h3></a></div>
             </div>
         </div>
+
+<div id="container">
+<div class="wrapper">
+
 

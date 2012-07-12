@@ -1,5 +1,10 @@
 <?php if (!isset($included)) die();  ?>
 </div>
+</div>
+
+
+
+</div>
 <div class="clear push"></div>
 </div>
 <div id="footer">
