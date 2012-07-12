@@ -7,6 +7,7 @@ error_reporting(E_ERROR);
  * if the GMP php extension exists it is preffered
  * because it is at least an order of magnitude faster
 */
+
 function __autoload($f)
 {
     //load the interfaces first otherwise contract errors occur
@@ -25,6 +26,8 @@ function __autoload($f)
         require_once $utilFile;
     }
 }
+
+
 if (extension_loaded('gmp') && !defined('USE_EXT')) {
     define('USE_EXT', 'GMP');
 } else if (extension_loaded('bcmath') && !defined('USE_EXT')) {
@@ -83,7 +86,7 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
             $row = $res->fetchRow();
             $hpasswd = sf($row['gr44l']);
             list($salt, $db_hash) = explode('!', $hpasswd);
-            print "Salt is '$salt' '$db_hash' '$hpasswd' <br>";
+            //print "Salt is '$salt' '$db_hash' '$hpasswd' <br>";
             $hash = $password;
             for ($i = 1; $i <= 1024; $i++) {
                 $hash = sha1($salt . $hash);
@@ -92,8 +95,9 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
                 $_SESSION['username'] = sf($row['username']);
                 $_SESSION['email'] = sf($row['email']);
                 $_SESSION['uid'] = sf($row['id']);
-                print "session is ok";
-                header("Location: " . $_SESSION['redir']);
+                print "Welcome, session is ok";
+				print "<SCRIPT language=\"JavaScript\">window.location=\"".$_SESSION['redir']."\";</SCRIPT>";
+				//header("Location: " . $_SESSION['redir']);
             } else {
                 // Bad hash
                 header("Location: " . "http://" . $host . $root . "index.php");
@@ -144,6 +148,17 @@ if ((!empty($_POST["challenge"])) && (mb_substr($_POST["challenge"], 0, 76) == $
 <script language="JavaScript" type="text/javascript" src="js/aes/utf8.js"></script>
 <script type="text/javascript">
 <!--
+
+$(function(){
+	$('input').keydown(function(e){
+		if (e.keyCode == 13) {
+			do_login();
+			return false;
+		}
+	});
+});
+
+
 function set_ec_params(name) {
   var c = getSECCurveByName(name);
 
@@ -254,13 +269,15 @@ function do_login() {
 //-->
 </script>
     <h1> Welcome to the Pacmiam. Please authenticate yourself to access to your bubbles...</h1>
-<form name="ecdhtest" id="ecdhtest" onSubmit='return false;'> 
-    <fieldset class="logon">
+<form name="ecdhtest" id="ecdhtest" onSubmit="do_login()" > 
+<fieldset class="logon">
 <p>
 Login:<br />
 <input type="text" name="identifiant" id="identifiant" size="16" class="saisie" /><br />
 Password:<br />
 <input type="password" name="motdepasse" id="motdepasse" size="16" class="saisie" /><br />
+
+<input type="button" value="Submit" name="submit" onclick="do_login();" />
 <input type="hidden" name="bob_priv" value=""><br>
 
 <!-- [Step 4] Bob's public point (<i>B = bG</i>) (X,Y):<br> -->
@@ -301,7 +318,6 @@ Password:<br />
     print "<input type='hidden' name='challenge' id='challenge' value='$challenge'><br>\n";
 ?>
 
-<input type="button" value="Submit" name="submit" onclick="do_login();" />
 </p>
     </fieldset>
 </form>

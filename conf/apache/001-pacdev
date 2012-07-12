@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	servername pacdev.trollprod.int
+
+
+	DocumentRoot /home/thanatos/websites/pacmiam/http
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /home/thanatos/websites/pacmiam/logs/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /home/thanatos/websites/pacmiam/logs/access.log combined
+</VirtualHost>

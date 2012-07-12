@@ -161,14 +161,14 @@ if (PEAR::isError($res)) {
 
 echo "Create Some users... johndoe and thanatos with password as pass<br>";
 $res =& $mdb2->query(" insert into pm_usr ( username,gr44l,email,status) VALUES
-                ('johndoe','93c3e1f!8f03ef97e75a700d96f062dfc9edd728a826e48a','thanspam@trollprod.org',9); ");
+                ('johndoe','b58656d8!dbd6aa5357fd4ee7eb284eac88e5bc3fc0b54e62','thanspam@trollprod.org',9); ");
 
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
 
 $res =& $mdb2->query(" insert into pm_usr ( username,gr44l,email,status) VALUES
-                ('thanatos','8d4582a9!4ea7df8ab36a257610fd58691737be6d181b8e62','thanjunk@trollprod.org',9); ");
+                ('thanatos','b58656d8!dbd6aa5357fd4ee7eb284eac88e5bc3fc0b54e62','thanjunk@trollprod.org',9); ");
 
 if (PEAR::isError($res)) {
     die($res->getMessage());
