@@ -159,7 +159,7 @@ if (PEAR::isError($res)) {
     die($res->getMessage());
 }
 
-echo "Create Some users... johndoe and thanatos with password as pass<br>";
+echo "Create Some users... johndoe, psychedelys and thanatos with password as pass<br>";
 $res =& $mdb2->query(" insert into pm_usr ( username,gr44l,email,status) VALUES
                 ('johndoe','b58656d8!dbd6aa5357fd4ee7eb284eac88e5bc3fc0b54e62','thanspam@trollprod.org',9); ");
 
@@ -168,11 +168,32 @@ if (PEAR::isError($res)) {
 }
 
 $res =& $mdb2->query(" insert into pm_usr ( username,gr44l,email,status) VALUES
+                ('psychedelys','b58656d8!dbd6aa5357fd4ee7eb284eac88e5bc3fc0b54e62','thanspam@trollprod.org',9); ");
+				if (PEAR::isError($res)) {
+				    die($res->getMessage());
+					}
+
+
+$res =& $mdb2->query(" insert into pm_usr ( username,gr44l,email,status) VALUES
                 ('thanatos','b58656d8!dbd6aa5357fd4ee7eb284eac88e5bc3fc0b54e62','thanjunk@trollprod.org',9); ");
 
 if (PEAR::isError($res)) {
     die($res->getMessage());
 }
+
+
+echo "Create The group acme... johndoe is master<br>";
+$res =& $mdb2->query(" insert into pm_grp ( name) VALUES ('acme'); ");
+
+				if (PEAR::isError($res)) {
+				    die($res->getMessage());
+					}
+
+$res =& $mdb2->query(" insert into pm_grp_usr ( id_groups,id_users,admin,status) VALUES (1,1,1,0); ");
+            if (PEAR::isError($res)) {
+                 die($res->getMessage());
+                   }
+
 
 
 // Disconnect
